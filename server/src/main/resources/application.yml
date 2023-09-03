@@ -6,6 +6,6 @@ spring:
     active: docker
   datasource:
     driver_class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://wejump.cglhadxlzhnk.ap-northeast-2.rds.amazonaws.com:3306:wejump
+    url: jdbc:mariadb://wejump.cglhadxlzhnk.ap-northeast-2.rds.amazonaws.com:3306/wejump
     username: admin
     password: wejump772772
