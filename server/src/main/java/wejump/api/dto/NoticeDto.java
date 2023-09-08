@@ -19,6 +19,7 @@ public class NoticeDto {
     private Long courseId;
 
     public Notice toNotice() {
+        log.info("transform");
         return Notice.builder()
                 .noticeId(noticeId)
                 .title(title)

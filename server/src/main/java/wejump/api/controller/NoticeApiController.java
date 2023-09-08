@@ -40,14 +40,22 @@ public class NoticeApiController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @PatchMapping("/{noticeId}")
+    public ResponseEntity<Notice> update(@PathVariable Long noticeId, @RequestBody NoticeDto dto) {
+        Notice updated = noticeService.update(noticeId, dto);
+
+        return (updated != null)?
+                ResponseEntity.status(HttpStatus.OK).body(updated):
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+    }
     @PostMapping("")
     public ResponseEntity<Notice> create(@RequestBody NoticeDto dto) {
         log.info("create");
         Notice created = noticeService.create(dto);
         return (created != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(created) :
-                null;
-                //ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 }
