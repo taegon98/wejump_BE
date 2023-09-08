@@ -1,7 +1,6 @@
 package wejump.api.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import wejump.domain.Notice;
 import lombok.Getter;
