@@ -38,4 +38,3 @@ out/
 
 /src/main/resources/application-oauth.yml
 /src/main/resources/application.yml
-/src/main/wejump/server/config/auth/SecurityConfig
