@@ -3,14 +3,15 @@ server:
 
 spring:
   profiles:
+    include: oauth
     active: docker
   datasource:
     driver_class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://wejump.cglhadxlzhnk.ap-northeast-2.rds.amazonaws.com:3306/wejump
+    url: jdbc:mariadb://wejump.cglhadxlzhnk.ap-northeast-2.rds.amazonaws.com:3306/innodb
     username: admin
     password: wejump772772
   jpa:
+    show-sql: true
     hibernate:
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
-
-
+      ddl-auto: create
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
