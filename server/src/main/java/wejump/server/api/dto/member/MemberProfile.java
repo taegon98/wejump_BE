@@ -9,6 +9,7 @@ import wejump.server.domain.member.Member;
 public class MemberProfile {
     private String name;
     private String email;
+
     private String provider;
 
     private String nickname;

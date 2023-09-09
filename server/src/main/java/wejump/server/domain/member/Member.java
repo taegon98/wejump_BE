@@ -4,11 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.*;
 
 @NoArgsConstructor
-@DynamicUpdate //update 할때 실제 값이 변경된 컬럼만 update 쿼리를 만듬
+@DynamicUpdate
 @Entity
 @Getter
 @Table(name = "member")
@@ -27,16 +26,12 @@ public class Member {
     @Column(name = "nickname", nullable = true, unique = true)
     private String nickname;
 
-    @Column(name = "picture")
-    private String picture;
-
     @Builder
-    public Member(Long id, String name, String email, String nickname, String picture) {
+    public Member(Long id, String name, String email, String nickname) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.nickname = nickname;
-        this.picture = picture;
     }
 
     public Member update(String name, String email) {

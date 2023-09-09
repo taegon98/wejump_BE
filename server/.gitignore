@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-!**/src/java/wejump/server/config/auth/SecurityConfig
 
 ### STS ###
 .apt_generated
@@ -38,3 +37,5 @@ out/
 .vscode/
 
 /src/main/resources/application-oauth.yml
+/src/main/resources/application.yml
+/src/main/wejump/server/config/auth/SecurityConfig

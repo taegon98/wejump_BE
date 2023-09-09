@@ -25,17 +25,17 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
     private final MemberRepository memberRepository;
 
-    @Override
+    @Override //access 토큰 기반 유저 정보 가지고 오기
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest); // OAuth 서비스(kakao, google)
+        OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        String registrationId = userRequest.getClientRegistration()
-                .getRegistrationId(); // OAuth 서비스 이름
-        String userNameAttributeName = userRequest.getClientRegistration()
+        String registrationId = userRequest.getClientRegistration() // OAuth 서비스 이름
+                .getRegistrationId();
+        String userNameAttributeName = userRequest.getClientRegistration() // OAuth 로그인 시 pk
                 .getProviderDetails()
                 .getUserInfoEndpoint()
-                .getUserNameAttributeName(); // OAuth 로그인 시 키(pk)가 되는 값
+                .getUserNameAttributeName();
         Map<String, Object> attributes = oAuth2User.getAttributes(); // OAuth 서비스의 유저 정보들
 
         MemberProfile memberProfile = OAuthAttributes.extract(registrationId, attributes);
@@ -44,7 +44,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
         Map<String, Object> customAttribute = customAttribute(attributes, userNameAttributeName, memberProfile, registrationId);
 
-        return new DefaultOAuth2User(
+        return new DefaultOAuth2User(   //Oauth2.0 기본 구현
                 Collections.singleton(new SimpleGrantedAuthority("USER")),
                 customAttribute,
                 userNameAttributeName);

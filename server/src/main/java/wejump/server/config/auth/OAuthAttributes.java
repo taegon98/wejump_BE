@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 
-public enum OAuthAttributes {
+public enum OAuthAttributes {   //enum을 provider 형식에 맞춰 MemberProfile 형태로 만들어 반환
     GOOGLE("google", (attributes) -> {
         MemberProfile memberProfile = new MemberProfile();
         memberProfile.setName((String) attributes.get("name"));
