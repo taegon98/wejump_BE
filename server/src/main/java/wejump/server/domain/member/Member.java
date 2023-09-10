@@ -4,7 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.domain.course.EnrollCourse;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @DynamicUpdate
@@ -25,6 +29,10 @@ public class Member {
 
     @Column(name = "nickname", nullable = true, unique = true)
     private String nickname;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EnrollCourse> enrolledCourses = new ArrayList<>();
+
 
     @Builder
     public Member(Long id, String name, String email, String nickname) {
