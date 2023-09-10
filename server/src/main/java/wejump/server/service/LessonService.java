@@ -16,6 +16,11 @@ public class LessonService {
 
     //전체 수업 조회
     public List<Lesson> getLessonByCourseId(Long courseId){
-        return lessonRepository.findByCourse_Id(courseId);
+        List<Lesson> lessonList = lessonRepository.findByCourse_Id(courseId);
+        if (!lessonList.isEmpty()){
+            return lessonList;
+        }
+        System.out.println("cannot find lesson");
+        return null;
     }
 }

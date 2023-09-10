@@ -1,5 +1,6 @@
 package wejump.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -42,6 +43,7 @@ public class Course {
     private String reference;
 
     @Getter
+    @JsonBackReference
     @OneToMany(mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
 

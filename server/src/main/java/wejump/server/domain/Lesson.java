@@ -1,5 +1,6 @@
 package wejump.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,7 @@ public class Lesson {
     private Long id;
 
     @Getter
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private int week;
 
     @Getter
@@ -36,9 +37,18 @@ public class Lesson {
     private List<Attend> attends = new ArrayList<>();
 
     @Getter
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setWeek(int week) {
         this.week = week;
@@ -52,7 +62,7 @@ public class Lesson {
         this.content = content;
     }
 
-    public void setLesson_time(LocalDate lesson_date) {
+    public void setLesson_date(LocalDate lesson_date) {
         this.lesson_date = lesson_date;
     }
 
