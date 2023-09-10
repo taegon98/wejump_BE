@@ -63,7 +63,7 @@ public class CourseService {
                 continue;
             }
             else{
-                //updatedLesson.setId(null);
+                updatedLesson.setId(null);
                 lessonRepository.save(updatedLesson);
                 existingCourse.getLessons().add(updatedLesson);
             }
