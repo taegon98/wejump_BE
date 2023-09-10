@@ -50,8 +50,12 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 
+    /*
+     ****************************************비지니스 로직****************************************
+     */
+
     // 비즈니스 로직을 통해 필드 값 변경
-    public void updateCourseInfo(String name, Integer quota, String start_date, String end_date, String description, String summary, String reference) {
+    public void updateCourse(String name, Integer quota, String start_date, String end_date, String description, String summary, String reference) {
 
         this.name = name;
         this.quota = quota;
@@ -61,10 +65,6 @@ public class Course {
         this.summary = summary;
         this.reference = reference;
     }
-
-    /*
-     ****************************************비지니스 로직****************************************
-     */
 
     // 코스에 멤버를 등록하는 메서드
     public void addMember(Member member) {

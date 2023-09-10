@@ -80,10 +80,10 @@ public class CourseService {
     @Transactional
     public Course updateCourse(Long courseId, CourseRequestDTO courseRequestDTO) {
         // courseId로 기존 코스를 조회
-        Course existingCourse = courseRepository.findById(courseId)
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
         // 기존 코스 정보 업데이트
-        existingCourse.updateCourseInfo(courseRequestDTO.getName(),
+        course.updateCourse(courseRequestDTO.getName(),
                 courseRequestDTO.getQuota(),
                 courseRequestDTO.getStart_date(),
                 courseRequestDTO.getEnd_date(),
@@ -91,8 +91,8 @@ public class CourseService {
                 courseRequestDTO.getSummary(),
                 courseRequestDTO.getReference());
 
-        // 코스 저장 (업데이트)
-        return courseRepository.save(existingCourse);
+        // 코스 업데이트
+        return courseRepository.save(course);
     }
 
     @Transactional
