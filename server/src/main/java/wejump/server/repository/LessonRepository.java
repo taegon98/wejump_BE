@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import wejump.server.domain.Lesson;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
