@@ -1,62 +1,44 @@
 package wejump.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-@Getter
+@DynamicUpdate
 @Entity
+@Table(name = "user")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Getter
-    @Column(length = 30, nullable = false)
-    private String user_name;
+    @Column(nullable = false)
+    private String name;
 
-    @Getter
-    @Column(length = 45, nullable = false)
-    private String user_email;
+    @Column(nullable = false)
+    private String email;
 
-    @Getter
     @Column(nullable = false)
     private String password;
 
-    @Getter
-    @Column(length = 45, nullable = false)
+    @Column(nullable = false)
     private String profile_image;
 
-    @Getter
     @Column(nullable = false)
-    private String role = "student";
+    private String role;
 
-    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attend> attends = new ArrayList<>();
-
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
-
-    public void setUser_email(String user_email) {
-        this.user_email = user_email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public User() {
-        this.role = "student"; // 기본값 설정
-    }
 }

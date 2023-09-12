@@ -1,5 +1,6 @@
 package wejump.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,8 +38,9 @@ public class Lesson {
     @Column(nullable = false)
     private LocalDate start;
 
-//    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Attend> inCourses = new ArrayList<>();
+    @JsonBackReference
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Attend> inCourses = new ArrayList<>();
 
     @ManyToOne
     @JsonManagedReference
