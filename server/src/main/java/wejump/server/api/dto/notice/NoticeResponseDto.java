@@ -1,4 +1,4 @@
-package wejump.api.dto.Notice;
+package wejump.server.api.dto.notice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

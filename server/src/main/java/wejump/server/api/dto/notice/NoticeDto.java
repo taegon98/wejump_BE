@@ -1,8 +1,8 @@
-package wejump.api.dto.Notice;
+package wejump.server.api.dto.notice;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import wejump.domain.Notice;
+import wejump.server.domain.notice.Notice;
 import lombok.Getter;
 import java.time.LocalDateTime;
 

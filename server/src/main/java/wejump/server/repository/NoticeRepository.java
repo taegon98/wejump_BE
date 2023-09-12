@@ -1,6 +1,6 @@
-package wejump.repository;
+package wejump.server.repository;
 
-import wejump.domain.Notice;
+import wejump.server.domain.notice.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,15 +1,14 @@
-package wejump.api.controller;
+package wejump.server.api.controller;
 
-import org.springframework.validation.annotation.Validated;
-import wejump.api.dto.Notice.NoticeDto;
-import wejump.api.dto.Notice.NoticeResponseDto;
-import wejump.domain.Notice;
+import wejump.server.api.dto.notice.NoticeDto;
+import wejump.server.api.dto.notice.NoticeResponseDto;
+import wejump.server.domain.notice.Notice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wejump.service.NoticeService;
+import wejump.server.service.NoticeService;
 
 import java.util.List;
 

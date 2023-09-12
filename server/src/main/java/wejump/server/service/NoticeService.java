@@ -1,12 +1,12 @@
-package wejump.service;
+package wejump.server.service;
 
 import lombok.extern.slf4j.Slf4j;
-import wejump.api.dto.Notice.NoticeDto;
-import wejump.api.dto.Notice.NoticeResponseDto;
-import wejump.domain.Notice;
+import wejump.server.api.dto.notice.NoticeDto;
+import wejump.server.api.dto.notice.NoticeResponseDto;
+import wejump.server.domain.notice.Notice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import wejump.repository.NoticeRepository;
+import wejump.server.repository.NoticeRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
-package wejump.domain;
+package wejump.server.domain.notice;
 
 import lombok.*;
-import wejump.api.dto.Notice.NoticeResponseDto;
+import wejump.server.api.dto.notice.NoticeResponseDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
