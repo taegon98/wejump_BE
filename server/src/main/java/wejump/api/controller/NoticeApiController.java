@@ -1,6 +1,8 @@
 package wejump.api.controller;
 
-import wejump.api.dto.NoticeDto;
+import org.springframework.validation.annotation.Validated;
+import wejump.api.dto.Notice.NoticeDto;
+import wejump.api.dto.Notice.NoticeResponseDto;
 import wejump.domain.Notice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,45 +16,52 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/notice")
+@RequestMapping("/courses/{courseId}/notice") //코스별 notice, /course/{courseId}/notice
 public class NoticeApiController {
 
     private final NoticeService noticeService;
 
+    //모든 notice 조회
     @GetMapping("")
-    public List<Notice> index(){
+    public ResponseEntity<List<NoticeResponseDto>> index(@PathVariable Long courseId){
+        log.info(courseId.toString());
         log.info("test");
-        return noticeService.index();
+        return new ResponseEntity<>(noticeService.index(courseId), HttpStatus.OK);
     }
 
+    //특정 notice 조회
     @GetMapping("/{noticeId}")
-    public Notice show(@PathVariable Long noticeId) {
+    public ResponseEntity<NoticeResponseDto> show(@PathVariable Long noticeId) {
         log.info("read");
-        return noticeService.show(noticeId);
+        return new ResponseEntity<>(noticeService.show(noticeId), HttpStatus.OK);
     }
 
+    //특정 notice 삭제
     @DeleteMapping("/{noticeId}")
-    public ResponseEntity<Notice> delete(@PathVariable Long noticeId) {
+    public ResponseEntity<NoticeResponseDto> delete(@PathVariable Long noticeId) {
         Notice deleted = noticeService.delete(noticeId);
+        NoticeResponseDto responseDto = deleted.toResponseDto();
 
-        return (deleted != null) ?
+        return (responseDto != null) ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    //특정 notice 수정
     @PatchMapping("/{noticeId}")
-    public ResponseEntity<Notice> update(@PathVariable Long noticeId, @RequestBody NoticeDto dto) {
+    public ResponseEntity<NoticeResponseDto> update(@PathVariable Long noticeId, @RequestBody NoticeDto dto) {
         Notice updated = noticeService.update(noticeId, dto);
-
-        return (updated != null)?
-                ResponseEntity.status(HttpStatus.OK).body(updated):
+        NoticeResponseDto responseDto = updated.toResponseDto();
+        return (responseDto != null)?
+                ResponseEntity.status(HttpStatus.OK).body(responseDto):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
     }
+
+    //notice 등록
     @PostMapping("")
-    public ResponseEntity<Notice> create(@RequestBody NoticeDto dto) {
+    public ResponseEntity<Notice> create(@RequestBody NoticeDto dto, @PathVariable Long courseId) {
         log.info("create");
-        Notice created = noticeService.create(dto);
+        Notice created = noticeService.create(dto, courseId);
         return (created != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(created) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

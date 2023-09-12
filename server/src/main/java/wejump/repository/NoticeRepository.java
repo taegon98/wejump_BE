@@ -10,4 +10,8 @@ import java.util.ArrayList;
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Override
     ArrayList<Notice> findAll();
+
+    Notice findByCourseId(Long courseId);
+
+    ArrayList<Notice> findAllByCourseId(Long courseId);
 }

@@ -1,13 +1,15 @@
 package wejump.service;
 
 import lombok.extern.slf4j.Slf4j;
-import wejump.api.dto.NoticeDto;
+import wejump.api.dto.Notice.NoticeDto;
+import wejump.api.dto.Notice.NoticeResponseDto;
 import wejump.domain.Notice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import wejump.repository.NoticeRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -15,27 +17,31 @@ import java.util.List;
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
-    public List<Notice> index() {
-        return noticeRepository.findAll();
+    public List<NoticeResponseDto> index(Long courseId) {
+
+        List<Notice> notices = noticeRepository.findAllByCourseId(courseId);
+        List<NoticeResponseDto> responseDtos = notices.stream()
+                .map(notice -> notice.toResponseDto())
+                .collect(Collectors.toList());
+        return responseDtos;
     }
 
-    public Notice show(Long noticeId) {
-        return noticeRepository.findById(noticeId).orElse(null);
+    //없는 아이디 조회 시 빈 json, 응답코드 200
+    public NoticeResponseDto show(Long noticeId) {
+        Notice notice = noticeRepository.findById(noticeId).orElse(null);
+        return notice.toResponseDto();
     }
 
-    public Notice create(NoticeDto dto) {
-        Notice notice = dto.toNotice();
-        if(notice.getNoticeId() != null){
-            log.info("already existing");
-            return null;
-        }
+    public Notice create(NoticeDto dto, Long courseId) {
+        Notice notice = dto.toNotice(courseId); //글 작성시간 이때 들어 감
+        log.info(notice.toString());
         log.info("save");
         return noticeRepository.save(notice);
     }
 
     public Notice delete(Long id) {
         Notice target = noticeRepository.findById(id).orElse(null);
-        if (target == null) {
+        if (target == null) {   //400대 에러 띄우기.
             return null;
         }
         noticeRepository.delete(target);
@@ -56,4 +62,7 @@ public class NoticeService {
         Notice updated = noticeRepository.save(target);
         return updated;
     }
+
+
+
 }

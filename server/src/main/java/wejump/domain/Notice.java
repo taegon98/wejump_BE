@@ -1,6 +1,7 @@
 package wejump.domain;
 
 import lombok.*;
+import wejump.api.dto.Notice.NoticeResponseDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,5 +44,15 @@ public class Notice {
             this.content = notice.content;
         }
         //글을 수정한 시간 정보가 필요할까요? 게시시간 정보를 바꾸면 안 될 것 같아서...
+    }
+
+    public NoticeResponseDto toResponseDto() {
+        return NoticeResponseDto.builder()
+                .noticeId(noticeId)
+                .title(title)
+                .content(content)
+                .announcementDate(announcementDate)
+                .courseId(courseId)
+                .build();
     }
 }
