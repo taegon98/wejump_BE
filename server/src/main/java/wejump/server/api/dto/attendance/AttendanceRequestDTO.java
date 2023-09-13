@@ -1,7 +1,6 @@
 package wejump.server.api.dto.attendance;
 
 import lombok.Getter;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

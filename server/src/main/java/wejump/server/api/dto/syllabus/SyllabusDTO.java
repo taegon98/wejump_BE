@@ -1,4 +1,4 @@
-package wejump.server.api.dto;
+package wejump.server.api.dto.syllabus;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package wejump.server.domain;
+package wejump.server.domain.lesson;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.domain.course.Course;
 
 import javax.persistence.*;
 import java.time.LocalDate;

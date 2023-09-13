@@ -11,8 +11,8 @@ import wejump.server.api.dto.attendance.AttendanceRequestDTO;
 import wejump.server.api.dto.attendance.AttendanceResponseDTO;
 import wejump.server.api.dto.lesson.LessonRequestDTO;
 import wejump.server.api.dto.lesson.LessonResponseDTO;
-import wejump.server.domain.Attend;
-import wejump.server.domain.Lesson;
+import wejump.server.domain.lesson.Attend;
+import wejump.server.domain.lesson.Lesson;
 import wejump.server.service.AttendanceService;
 
 import javax.validation.Valid;

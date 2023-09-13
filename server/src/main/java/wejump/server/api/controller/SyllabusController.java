@@ -7,8 +7,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import wejump.server.api.dto.lesson.LessonRequestDTO;
-import wejump.server.api.dto.SyllabusDTO;
-import wejump.server.domain.Lesson;
+import wejump.server.api.dto.syllabus.SyllabusDTO;
+import wejump.server.domain.lesson.Lesson;
 import wejump.server.service.SyllabusService;
 
 import javax.validation.Valid;
