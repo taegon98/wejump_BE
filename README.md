@@ -2,4 +2,5 @@
 
 ---
 ### ERD
-<img width="589" alt="image" src="https://github.com/taegon98/wejump_BE/assets/54783290/5529e1e5-d7fc-4a46-90b8-1214dcb08891">
+<img width="575" alt="image" src="https://github.com/taegon98/wejump_BE/assets/54783290/cb23132b-c52d-4a08-a97f-fbb63d8508a9">
+
