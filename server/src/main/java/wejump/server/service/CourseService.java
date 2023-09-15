@@ -13,6 +13,7 @@ import wejump.server.repository.CourseRepository;
 import wejump.server.repository.EnrollRepository;
 import wejump.server.repository.MemberRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,8 @@ public class CourseService {
         Course course = Course.builder()
                 .name("Course Name")
                 .quota(50)
-                .start_date("2023-09-10")
-                .end_date("2023-12-31")
+                .start_date(LocalDate.parse("2023.09.10"))
+                .end_date(LocalDate.parse("2023-12-31"))
                 .description("Course Description")
                 .summary("Course Summary")
                 .reference("Course Reference")
@@ -52,7 +53,7 @@ public class CourseService {
         List<Course> courses = courseRepository.findAll();
         // 엔티티를 DTO로 변환
         return courses.stream()
-                .map(this::createCourseDTO)
+                .map(course -> course.build(course))
                 .collect(Collectors.toList());
     }
 
@@ -61,27 +62,18 @@ public class CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
         // 엔티티를 DTO로 변환하여 반환
-        return createCourseDTO(course);
+        return course.build(course);
     }
 
     // 엔티티를 DTO로 변환하는 메서드
-    public CourseResponseDTO createCourseDTO(Course course) {
-        return CourseResponseDTO.builder()
-                .name(course.getName())
-                .quota(course.getQuota())
-                .startDate(course.getStart_date())
-                .endDate(course.getEnd_date())
-                .description(course.getDescription())
-                .summary(course.getSummary())
-                .reference(course.getReference())
-                .build();
-    }
+
 
     @Transactional
     public Course updateCourse(Long courseId, CourseRequestDTO courseRequestDTO) {
         // courseId로 기존 코스를 조회
         Course existingCourse = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
+
         // 기존 코스 정보 업데이트
         existingCourse.updateCourseInfo(courseRequestDTO.getName(),
                 courseRequestDTO.getQuota(),

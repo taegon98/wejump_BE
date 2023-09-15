@@ -1,11 +1,10 @@
 package wejump.server.api.dto.course;
 
 import lombok.Getter;
-import wejump.server.domain.course.Course;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @Getter
 public class CourseRequestDTO {
@@ -18,10 +17,10 @@ public class CourseRequestDTO {
     private Integer quota;
 
     @NotBlank(message = "시작 날짜는 필수입니다.")
-    private String start_date;
+    private LocalDate start_date;
 
     @NotBlank(message = "종료 날짜는 필수입니다.")
-    private String end_date;
+    private LocalDate end_date;
 
     @NotBlank(message = "코스 설명은 필수입니다.")
     private String description;

@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.api.dto.course.CourseResponseDTO;
 import wejump.server.domain.member.Member;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,10 +35,10 @@ public class Course {
     private Integer quota;
 
     @Column(name = "start", nullable = false)
-    private String start_date;
+    private LocalDate start_date;
 
     @Column(name = "end", nullable = false)
-    private String end_date;
+    private LocalDate end_date;
 
     @Column(name = "description", length = 200, nullable = false)
     private String description;
@@ -51,7 +53,7 @@ public class Course {
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 
     // 비즈니스 로직을 통해 필드 값 변경
-    public void updateCourseInfo(String name, Integer quota, String start_date, String end_date, String description, String summary, String reference) {
+    public void updateCourseInfo(String name, Integer quota, LocalDate start_date, LocalDate end_date, String description, String summary, String reference) {
 
         this.name = name;
         this.quota = quota;
@@ -60,6 +62,19 @@ public class Course {
         this.description = description;
         this.summary = summary;
         this.reference = reference;
+    }
+
+    public CourseResponseDTO build(Course course) {
+
+        return CourseResponseDTO.builder()
+                .name(course.getName())
+                .quota(course.getQuota())
+                .startDate(course.getStart_date())
+                .endDate(course.getEnd_date())
+                .description(course.getDescription())
+                .summary(course.getSummary())
+                .reference(course.getReference())
+                .build();
     }
 
     /*
