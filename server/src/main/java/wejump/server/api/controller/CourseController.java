@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import wejump.server.api.dto.course.CourseRequestDTO;
 import wejump.server.api.dto.course.CourseResponseDTO;
 import wejump.server.api.dto.member.MemberResponseDTO;
-import wejump.server.domain.course.Course;
-import wejump.server.domain.member.Member;
+import wejump.server.domain.course.Course;;
 import wejump.server.service.CourseService;
 import javax.validation.Valid;
 import java.util.List;
@@ -95,4 +94,6 @@ public class CourseController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(enrolledMembers);
     }
+
+
 }

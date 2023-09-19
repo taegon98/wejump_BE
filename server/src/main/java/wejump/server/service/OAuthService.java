@@ -1,7 +1,6 @@
 package wejump.server.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -14,7 +13,6 @@ import wejump.server.api.dto.member.MemberProfile;
 import wejump.server.config.auth.OAuthAttributes;
 import wejump.server.domain.member.Member;
 import wejump.server.repository.MemberRepository;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -26,8 +26,8 @@ public class EnrollCourse {
     @Column(name = "date", nullable = true)
     private String date;
 
-    @Column(name = "instructor", length = 50, nullable = true)
-    private String instructor;
+    @Column(name = "instructor", nullable = true)
+    private Boolean instructor;
 
     @ManyToOne
     @JoinColumn(name = "member_id") // Member 엔티티의 외래 키

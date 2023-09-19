@@ -95,7 +95,7 @@ public class Course {
                     .course(this)
                     .member(member)
                     .date(formattedDate)
-                    .instructor("Dr. Yeon")
+                    .instructor(true)
                     .build();
 
             enrolledCourses.add(enrollCourse);
