@@ -75,7 +75,7 @@ public class CourseService {
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
 
         // 기존 코스 정보 업데이트
-        course.updateCourse(courseRequestDTO.getName(),
+        course.updateCourseInfo(courseRequestDTO.getName(),
                 courseRequestDTO.getQuota(),
                 courseRequestDTO.getStart_date(),
                 courseRequestDTO.getEnd_date(),
