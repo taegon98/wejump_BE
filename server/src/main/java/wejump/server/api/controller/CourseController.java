@@ -1,5 +1,4 @@
 package wejump.server.api.controller;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -10,7 +9,6 @@ import wejump.server.api.dto.course.CourseRequestDTO;
 import wejump.server.api.dto.course.CourseResponseDTO;
 import wejump.server.api.dto.member.MemberResponseDTO;
 import wejump.server.domain.course.Course;
-import wejump.server.domain.member.Member;
 import wejump.server.service.CourseService;
 import javax.validation.Valid;
 import java.util.List;
