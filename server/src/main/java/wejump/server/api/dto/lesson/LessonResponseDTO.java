@@ -1,6 +1,7 @@
 package wejump.server.api.dto.lesson;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 

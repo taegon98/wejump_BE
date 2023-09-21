@@ -9,7 +9,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @DynamicUpdate
 @Entity

@@ -5,13 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wejump.server.api.dto.attendance.AttendanceRequestDTO;
 import wejump.server.api.dto.attendance.AttendanceResponseDTO;
-import wejump.server.api.dto.lesson.LessonRequestDTO;
-import wejump.server.domain.lesson.Attend;
-import wejump.server.domain.course.Course;
-import wejump.server.domain.lesson.Lesson;
 import wejump.server.domain.User;
+import wejump.server.domain.lesson.Attend;
+import wejump.server.domain.lesson.Lesson;
 import wejump.server.repository.AttendRepository;
-import wejump.server.repository.CourseRepository;
 import wejump.server.repository.LessonRepository;
 import wejump.server.repository.UserRepository;
 

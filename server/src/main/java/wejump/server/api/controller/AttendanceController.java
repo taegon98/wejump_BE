@@ -1,7 +1,6 @@
 package wejump.server.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -9,10 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import wejump.server.api.dto.attendance.AttendanceRequestDTO;
 import wejump.server.api.dto.attendance.AttendanceResponseDTO;
-import wejump.server.api.dto.lesson.LessonRequestDTO;
-import wejump.server.api.dto.lesson.LessonResponseDTO;
 import wejump.server.domain.lesson.Attend;
-import wejump.server.domain.lesson.Lesson;
 import wejump.server.service.AttendanceService;
 
 import javax.validation.Valid;
@@ -25,7 +21,7 @@ import java.util.stream.Collectors;
 public class AttendanceController {
     private final AttendanceService attendanceService;
 
-    // create attendance
+    // create attendance (어떻게 생성할지 회의 후 수정 필요)
     @PostMapping("/{userId}")
     public ResponseEntity<Object> createAttend(@PathVariable Long courseId,
                                                @PathVariable Long userId){
@@ -33,6 +29,7 @@ public class AttendanceController {
         return new ResponseEntity<>(createdAttend, HttpStatus.CREATED);
     }
 
+    // read all attendance
     @GetMapping
     public List<AttendanceResponseDTO> getAttendanceById(@PathVariable Long courseId){
         return attendanceService.getAttendanceById(courseId);

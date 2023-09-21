@@ -1,15 +1,15 @@
 package wejump.server.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wejump.server.api.dto.lesson.LessonRequestDTO;
+import wejump.server.api.dto.lesson.LessonResponseDTO;
 import wejump.server.api.dto.syllabus.PlanDTO;
+import wejump.server.api.dto.syllabus.SyllabusDTO;
 import wejump.server.domain.course.Course;
 import wejump.server.domain.course.CoursePlan;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.api.dto.lesson.LessonResponseDTO;
-import wejump.server.api.dto.syllabus.SyllabusDTO;
 import wejump.server.repository.CoursePlanRepository;
 import wejump.server.repository.CourseRepository;
 import wejump.server.repository.LessonRepository;
