@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import wejump.server.domain.User;
+import wejump.server.domain.member.Member;
 
 import javax.persistence.*;
 
@@ -33,8 +33,8 @@ public class Attend {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public void updateAttendInfo(String status) {
         this.status = status;

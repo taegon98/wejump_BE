@@ -1,11 +1,14 @@
 package wejump.server.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.assignment.Submit;
 import wejump.server.domain.course.EnrollCourse;
+import wejump.server.domain.lesson.Attend;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,10 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Submit> submits;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Attend> attends;
 
     @Builder
     public Member(Long id, String name, String email, String nickname) {
