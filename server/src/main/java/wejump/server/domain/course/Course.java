@@ -1,10 +1,12 @@
 package wejump.server.domain.course;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.domain.lesson.Lesson;
 import wejump.server.api.dto.course.CourseResponseDTO;
 import wejump.server.domain.member.Member;
 import javax.persistence.*;
@@ -49,6 +51,14 @@ public class Course {
     @Column(name = "reference", nullable = true)
     private String reference;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Lesson> lessons;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CoursePlan> plans;
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 
@@ -65,6 +75,12 @@ public class Course {
         this.start_date = start_date;
         this.end_date = end_date;
         this.description = description;
+        this.summary = summary;
+        this.reference = reference;
+    }
+
+//syllabus 에서 update
+    public void updateCourseInfo(String summary, String reference){
         this.summary = summary;
         this.reference = reference;
     }
@@ -110,4 +126,6 @@ public class Course {
             member.getEnrolledCourses().add(enrollCourse);
         }
     }
+
+
 }
