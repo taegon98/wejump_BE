@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://wejump.cglhadxlzhnk.ap-northeast-2.rds.amazonaws.com:3306/innodb
+    username: admin
+    password: jump772772
+  jpa:
+    hibernate:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      ddl-auto: create
+    show_sql: true
+  profiles:
+    include: oauth
