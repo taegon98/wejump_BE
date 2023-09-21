@@ -10,7 +10,6 @@ import wejump.server.domain.lesson.Lesson;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @DynamicUpdate
@@ -49,5 +48,14 @@ public class Course {
 
     @JsonBackReference
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Lesson> lessons = new ArrayList<>();
+    private List<Lesson> lessons;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CoursePlan> plans;
+
+    public void updateCourseInfo(String summary, String reference){
+        this.summary = summary;
+        this.reference = reference;
+    }
 }

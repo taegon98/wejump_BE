@@ -41,7 +41,7 @@ public class Lesson {
 
     @JsonBackReference
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attend> inCourses = new ArrayList<>();
+    private List<Attend> inCourses;
 
     @ManyToOne
     @JsonManagedReference

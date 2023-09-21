@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import wejump.server.api.dto.lesson.LessonRequestDTO;
+import wejump.server.api.dto.syllabus.PlanDTO;
 import wejump.server.domain.course.Course;
+import wejump.server.domain.course.CoursePlan;
 import wejump.server.domain.lesson.Lesson;
 import wejump.server.api.dto.lesson.LessonResponseDTO;
 import wejump.server.api.dto.syllabus.SyllabusDTO;
+import wejump.server.repository.CoursePlanRepository;
 import wejump.server.repository.CourseRepository;
 import wejump.server.repository.LessonRepository;
 
@@ -20,21 +23,58 @@ import java.util.stream.Collectors;
 public class SyllabusService {
     private final CourseRepository courseRepository;
     private final LessonRepository lessonRepository;
+    private final CoursePlanRepository coursePlanRepository;
 
+    // syllabus read (수정 완)
     @Transactional(readOnly = true)
     public SyllabusDTO getSyllabusById(Long courseId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("cannot find course"));
 
-        List<Lesson> lessons = lessonRepository.findByCourse_Id(courseId);
-
-        // Lesson 객체를 LessonDTO로 변환
-        List<LessonResponseDTO> lessonResponseDTOS = lessons.stream()
-                .map(this::createLessonDTO)
+        List<PlanDTO> plans = coursePlanRepository.findByCourse_id(courseId).stream()
+                .map(plan -> PlanDTO.builder()
+                        .week(plan.getWeek())
+                        .title(plan.getTitle())
+                        .video(plan.getVideo())
+                        .assignment(plan.getAssignment())
+                        .build())
                 .collect(Collectors.toList());
-        return createSyllabusDTO(course, lessonResponseDTOS);
+
+        return createSyllabusDTO(course, plans);
+    }
+    
+    //delete and create syllabus 만들기
+    @Transactional
+    public List<CoursePlan> updateSyllabus (Long courseId, SyllabusDTO syllabusDTO){
+
+        //update course info
+        Course existingCourse = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("cannot find course"));
+
+        existingCourse.updateCourseInfo(syllabusDTO.getSummary(),
+                syllabusDTO.getReference());
+
+        courseRepository.save(existingCourse);
+
+        //delete coursePlan
+        List<CoursePlan> existingPlans = coursePlanRepository.findByCourse_id(courseId);
+        coursePlanRepository.deleteAll(existingPlans);
+
+        //create coursePlan
+        List<CoursePlan> plans = syllabusDTO.getPlans().stream()
+                .map(plan -> CoursePlan.builder()
+                                .week(plan.getWeek())
+                                .title(plan.getTitle())
+                                .video(plan.getVideo())
+                                .assignment(plan.getAssignment())
+                                .course(existingCourse)
+                                .build())
+                .collect(Collectors.toList());
+
+        return coursePlanRepository.saveAll(plans);
     }
 
+    //이 아래는 일단 놔둘 것
     @Transactional
     public Lesson createLesson (Long courseId,LessonRequestDTO lessonRequestDTO){
         Course course = courseRepository.findById(courseId)
@@ -82,11 +122,11 @@ public class SyllabusService {
                 .build();
     }
 
-    public SyllabusDTO createSyllabusDTO(Course course, List<LessonResponseDTO> lessonResponseDTOS){
+    public SyllabusDTO createSyllabusDTO(Course course, List<PlanDTO> plans){
         return SyllabusDTO.builder()
                 .summary(course.getSummary())
                 .reference(course.getReference())
-                .lessons(lessonResponseDTOS)
+                .plans(plans)
                 .build();
     }
 }

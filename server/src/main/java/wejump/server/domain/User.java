@@ -41,5 +41,5 @@ public class User {
 
     @JsonBackReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attend> attends = new ArrayList<>();
+    private List<Attend> attends;
 }
