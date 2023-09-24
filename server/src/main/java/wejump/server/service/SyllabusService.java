@@ -65,8 +65,8 @@ public class SyllabusService {
                 .map(plan -> CoursePlan.builder()
                                 .week(plan.getWeek())
                                 .title(plan.getTitle())
-                                .video(plan.getVideo())
-                                .assignment(plan.getAssignment())
+                                .video(plan.getVideo() != null)
+                                .assignment(plan.getAssignment() != null)
                                 .course(existingCourse)
                                 .build())
                 .collect(Collectors.toList());

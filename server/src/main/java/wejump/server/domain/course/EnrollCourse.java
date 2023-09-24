@@ -1,5 +1,6 @@
 package wejump.server.domain.course;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,10 +31,12 @@ public class EnrollCourse {
     private Boolean instructor;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "member_id") // Member 엔티티의 외래 키
     private Member member;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "course_id") // Course 엔티티의 외래 키
     private Course course;
 

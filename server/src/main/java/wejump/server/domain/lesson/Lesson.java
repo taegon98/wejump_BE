@@ -47,6 +47,9 @@ public class Lesson {
     @JoinColumn(name = "course_id")
     private Course course;
 
+//    @OneToOne(mappedBy = "lesson")
+//    private Assignment assignment;
+
     public void updateLessonInfo(Integer week, String name, String content, LocalDate start) {
         this.week = week;
         this.name = name;

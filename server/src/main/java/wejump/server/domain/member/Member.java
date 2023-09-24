@@ -33,7 +33,7 @@ public class Member {
     @Column(name = "nickname", nullable = true, unique = true)
     private String nickname;
 
-
+    @JsonBackReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 

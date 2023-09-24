@@ -23,8 +23,11 @@ public class Attend {
     @Column(name = "attend_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String status;
+    @Column
+    private Boolean attendance;
+
+    @Column
+    private Boolean assignment;
 
     @ManyToOne
     @JsonManagedReference
@@ -36,7 +39,8 @@ public class Attend {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public void updateAttendInfo(String status) {
-        this.status = status;
+    public void updateStatusInfo(Boolean attendance, Boolean assignment) {
+        this.attendance = attendance;
+        this.assignment = assignment;
     }
 }

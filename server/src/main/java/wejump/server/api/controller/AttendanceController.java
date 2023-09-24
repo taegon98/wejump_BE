@@ -6,37 +6,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import wejump.server.api.dto.attendance.AttendanceRequestDTO;
-import wejump.server.api.dto.attendance.AttendanceResponseDTO;
+import wejump.server.api.dto.status.StatusRequestDTO;
+import wejump.server.api.dto.status.StatusResponseDTO;
+import wejump.server.api.dto.status.StatusDTO;
 import wejump.server.domain.lesson.Attend;
 import wejump.server.service.AttendanceService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/{courseId}/attendance")
+@RequestMapping("/{courseId}/status")
 @RequiredArgsConstructor
 public class AttendanceController {
     private final AttendanceService attendanceService;
 
-    // create attendance (어떻게 생성할지 회의 후 수정 필요)
-    @PostMapping("/{userId}")
-    public ResponseEntity<Object> createAttend(@PathVariable Long courseId,
-                                               @PathVariable Long userId){
-        List<Attend> createdAttend = attendanceService.createAttend(userId, courseId);
-        return new ResponseEntity<>(createdAttend, HttpStatus.CREATED);
-    }
-
-    // read all attendance
-    @GetMapping
-    public List<AttendanceResponseDTO> getAttendanceById(@PathVariable Long courseId){
-        return attendanceService.getAttendanceById(courseId);
-    }
-
-    @PutMapping
-    public ResponseEntity<Object> updateAttend(@RequestBody @Valid List<AttendanceRequestDTO> attendanceRequestDTOS,
+    // create attendance
+    @PostMapping
+    public ResponseEntity<Object> createStatus(@PathVariable Long courseId,
+                                               @RequestBody @Valid StatusDTO statusDTO,
                                                BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             List<String> errorMessages = bindingResult.getFieldErrors()
@@ -46,8 +38,43 @@ public class AttendanceController {
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-        List<AttendanceResponseDTO> updatedAttends = attendanceService.updateAttendance(attendanceRequestDTOS);
-        return new ResponseEntity<>(updatedAttends, HttpStatus.OK);
+        // 날짜 형식: "2023-09-13"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate start = LocalDate.parse(statusDTO.getDate(), formatter);
+            List<Attend> createdAttend = attendanceService.createStatus(courseId, start, statusDTO.getAttendance(), statusDTO.getAssignment());
+            return new ResponseEntity<>("create success", HttpStatus.CREATED);
+
+        }
+        catch (DateTimeParseException ex) {
+            return new ResponseEntity<>("date format is not correct", HttpStatus.BAD_REQUEST);
+        }
+        catch (AttendanceService.NotFoundException notFoundException) {
+            return new ResponseEntity<>("cannot find lesson", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    // read all attendance and assignment
+    @GetMapping
+    public List<StatusResponseDTO> getStatusById(@PathVariable Long courseId){
+        return attendanceService.getStatusById(courseId);
+    }
+
+
+    @PutMapping
+    public ResponseEntity<Object> updateStatus(@RequestBody @Valid List<StatusRequestDTO> statusRequestDTOS,
+                                               BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            List<String> errorMessages = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
+        }
+
+        List<Attend> updatedStatus = attendanceService.updateStatus(statusRequestDTOS);
+        return new ResponseEntity<>("update success", HttpStatus.OK);
     }
 
 }
