@@ -1,17 +1,19 @@
-package wejump.server.api.dto.notice;
+package wejump.server.api.dto.announcement;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Slf4j
 @Getter
-@Builder
-public class NoticeResponseDto {
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class AnnouncementRequestDTO {
 
-    private Long noticeId;
+    private Long announcementId;
     private String title;
     private String content;
     private LocalDateTime announcementDate;
