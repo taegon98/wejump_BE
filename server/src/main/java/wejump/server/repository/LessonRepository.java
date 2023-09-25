@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
     List<Lesson> findByCourse_Id(Long courseId);
-    Lesson findByStart(LocalDate start);
+    Lesson findByCourseIdAndStart(Long courseId, LocalDate start);
 }

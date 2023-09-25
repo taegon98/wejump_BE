@@ -40,7 +40,7 @@ public class Lesson {
 
     @JsonBackReference
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attend> inCourses;
+    private List<Status> inCourses;
 
     @ManyToOne
     @JsonManagedReference

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import wejump.server.api.dto.status.StatusRequestDTO;
 import wejump.server.api.dto.status.StatusResponseDTO;
 import wejump.server.domain.course.EnrollCourse;
-import wejump.server.domain.lesson.Attend;
+import wejump.server.domain.lesson.Status;
 import wejump.server.domain.lesson.Lesson;
 import wejump.server.repository.*;
 
@@ -21,64 +21,65 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AttendanceService {
+public class StatusService {
 
     private final LessonRepository lessonRepository;
-    private final AttendRepository attendRepository;
+    private final StatusRepository statusRepository;
     private final EnrollRepository enrollRepository;
     private final AssignmentRepository assignmentRepository;
     private final SubmitRepository submitRepository;
 
     @Transactional
-    public List<Attend> createStatus (Long courseId, LocalDate start, Boolean attendance, Boolean assignment) {
+    public List<Status> createStatus (Long courseId, LocalDate start, Boolean attendance, Boolean assignment) {
 
         List<EnrollCourse> enrolls = enrollRepository.findAllByCourseId(courseId);
 
-        Lesson lesson = lessonRepository.findByStart(start);
+        Lesson lesson = lessonRepository.findByCourseIdAndStart(courseId, start);
 
         if (lesson == null) {
             throw new NotFoundException();
         }
 
         if (attendance && assignment) {
-            List<Attend> attends = enrolls.stream()
-                    .map(enroll -> Attend.builder()
+            List<Status> statuses = enrolls.stream()
+                    .map(enroll -> Status.builder()
                             .member(enroll.getMember())
                             .lesson(lesson)
                             .attendance(false)
                             .assignment(false)
                             .build())
                     .collect(Collectors.toList());
-            return attendRepository.saveAll(attends);
+            return statusRepository.saveAll(statuses);
         } else if (attendance && !assignment) {
-            List<Attend> attends = enrolls.stream()
-                    .map(enroll -> Attend.builder()
+            List<Status> statuses = enrolls.stream()
+                    .map(enroll -> Status.builder()
                             .member(enroll.getMember())
                             .lesson(lesson)
                             .attendance(false)
                             .build())
                     .collect(Collectors.toList());
-            return attendRepository.saveAll(attends);
+            return statusRepository.saveAll(statuses);
         } else if (!attendance && assignment) {
-            List<Attend> attends = enrolls.stream()
-                    .map(enroll -> Attend.builder()
+            List<Status> statuses = enrolls.stream()
+                    .map(enroll -> Status.builder()
                             .member(enroll.getMember())
                             .lesson(lesson)
                             .assignment(false)
                             .build())
                     .collect(Collectors.toList());
-            return attendRepository.saveAll(attends);
+            return statusRepository.saveAll(statuses);
         }
         return null;
     }
 
+    @Transactional(readOnly = true)
     public List<StatusResponseDTO> getStatusById(Long courseId){
 
         List<Lesson> lessons = lessonRepository.findByCourse_Id(courseId);
         List<StatusResponseDTO> statusResponseDTOS = new ArrayList<>();
 
         for (Lesson lesson : lessons) {
-            List<Attend> status = attendRepository.findByLessonId(lesson.getId());
+            List<Status> status = statusRepository.findByLessonId(lesson.getId());
 
             List<StatusResponseDTO> statusDTOs = status.stream()
                     .map(this::createStatusResponseDTO)
@@ -90,24 +91,31 @@ public class AttendanceService {
     }
 
     @Transactional
-    public List<Attend> updateStatus(List<StatusRequestDTO> statusRequestDTOS){
-        List<Attend> updatedStatus = statusRequestDTOS.stream()
+    public void updateStatus(List<StatusRequestDTO> statusRequestDTOS){
+        List<Status> updatedStatus = statusRequestDTOS.stream()
                 .map(this::updateStatusById)
                 .collect(Collectors.toList());
-
-        return updatedStatus;
     }
 
-    private Attend updateStatusById(StatusRequestDTO statusRequestDTO){
-        Attend existingStatus = attendRepository.findById(statusRequestDTO.getId())
+    @Transactional
+    public void deleteStatus(Long courseId, LocalDate date){
+        Lesson lesson = lessonRepository.findByCourseIdAndStart(courseId, date);
+        List<Status> statusToDelete = statusRepository.findByLessonId(lesson.getId());
+
+        statusRepository.deleteAll(statusToDelete);
+    }
+
+
+    private Status updateStatusById(StatusRequestDTO statusRequestDTO){
+        Status existingStatus = statusRepository.findById(statusRequestDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("cannot find status"));
 
         existingStatus.updateStatusInfo(statusRequestDTO.getAttendance(), statusRequestDTO.getAssignment());
-        return attendRepository.save(existingStatus);
+        return statusRepository.save(existingStatus);
 
     }
 
-    private StatusResponseDTO createStatusResponseDTO(Attend status) {
+    private StatusResponseDTO createStatusResponseDTO(Status status) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return StatusResponseDTO.builder()
                 .id(status.getId())
