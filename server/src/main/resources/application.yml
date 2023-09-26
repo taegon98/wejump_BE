@@ -7,8 +7,8 @@ spring:
   jpa:
     hibernate:
       database-platform: org.hibernate.dialect.MariaDB103Dialect
-      ddl-auto: none
-    show_sql: true
+      ddl-auto: create
+    show_sql: none
   profiles:
     include: oauth
   servlet:
@@ -17,4 +17,5 @@ spring:
       max-request-size: 20MB
 file:
   upload:
-    path: C:/Users/82105/OneDrive/바탕 화면/test
+    path: /var/photos/
+
