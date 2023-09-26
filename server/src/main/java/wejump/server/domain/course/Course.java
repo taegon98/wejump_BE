@@ -59,6 +59,7 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CoursePlan> plans;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 

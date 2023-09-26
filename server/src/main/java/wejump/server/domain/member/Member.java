@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.assignment.Submit;
 import wejump.server.domain.course.EnrollCourse;
-import wejump.server.domain.lesson.Attend;
+import wejump.server.domain.lesson.Status;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class Member {
     @Column(name = "nickname", nullable = true, unique = true)
     private String nickname;
 
-
+    @JsonBackReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class Member {
 
     @JsonBackReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attend> attends;
+    private List<Status> statuses;
 
     @Builder
     public Member(Long id, String name, String email, String nickname) {

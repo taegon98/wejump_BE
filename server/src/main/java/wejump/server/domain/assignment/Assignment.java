@@ -8,7 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.api.dto.assignment.AssignmentResponseDTO;
 import wejump.server.api.dto.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
-
+import wejump.server.domain.lesson.Lesson;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +44,7 @@ public class Assignment {
     private List<Submit> submits; // Assignment와 Submit 엔티티 간의 관계 설정
 
 
+
     public AssignmentResponseDTO build(Assignment assignment) {
 
         return AssignmentResponseDTO.builder()
@@ -53,6 +54,11 @@ public class Assignment {
                 .dueDate(assignment.getDueDate())
                 .build();
     }
+
+
+      @OneToOne
+      @JoinColumn(name = "lesson_id")
+      private Lesson lesson;
 
 
     /*

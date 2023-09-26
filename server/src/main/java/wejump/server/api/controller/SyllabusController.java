@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import wejump.server.api.dto.lesson.LessonRequestDTO;
+import wejump.server.api.dto.syllabus.PlanDTO;
 import wejump.server.api.dto.syllabus.SyllabusDTO;
 import wejump.server.domain.course.CoursePlan;
 import wejump.server.domain.lesson.Lesson;
@@ -29,7 +30,7 @@ public class SyllabusController {
     }
 
     // update syllabus: course와 관련된 내용은 update, outline은 그냥 다 지우고 새로 생성
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Object> updateSyllabus(@PathVariable Long courseId,
                                                  @RequestBody @Valid SyllabusDTO syllabusDTO,
                                                  BindingResult bindingResult){
@@ -41,8 +42,14 @@ public class SyllabusController {
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
+        for (PlanDTO plan : syllabusDTO.getPlans()) {
+            if (plan.getWeek() == null || plan.getTitle() == null) {
+                return new ResponseEntity<>("Week and Title cannot be null.", HttpStatus.BAD_REQUEST);
+            }
+        }
+
         List<CoursePlan> updatedPlans = syllabusService.updateSyllabus(courseId, syllabusDTO);
-        return new ResponseEntity<>(updatedPlans, HttpStatus.OK);
+        return new ResponseEntity<>("update success!", HttpStatus.OK);
     }
 
     // create lesson 
