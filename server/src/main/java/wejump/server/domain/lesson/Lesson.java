@@ -40,12 +40,15 @@ public class Lesson {
 
     @JsonBackReference
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attend> inCourses;
+    private List<Status> inCourses;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "course_id")
     private Course course;
+
+//    @OneToOne(mappedBy = "lesson")
+//    private Assignment assignment;
 
     public void updateLessonInfo(Integer week, String name, String content, LocalDate start) {
         this.week = week;

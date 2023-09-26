@@ -28,11 +28,13 @@ public class CoursePlan {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Builder.Default
     @Column(name = "video", nullable = false)
-    private Boolean video;
+    private Boolean video = false;
 
+    @Builder.Default
     @Column(name = "assignment", nullable = false)
-    private Boolean assignment;
+    private Boolean assignment = false;
 
     @ManyToOne
     @JsonManagedReference

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.domain.lesson.Lesson;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +39,10 @@ public class Assignment {
 
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Submit> submits; // Assignment와 Submit 엔티티 간의 관계 설정
+
+//    @OneToOne
+//    @JoinColumn(name = "lesson_id")
+//    private Lesson lesson;
 
     /*
      ****************************************비지니스 로직****************************************
