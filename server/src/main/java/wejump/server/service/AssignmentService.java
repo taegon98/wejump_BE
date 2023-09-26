@@ -67,10 +67,10 @@ public class AssignmentService {
     }
 
     @Transactional(readOnly = true)
-    public AssignmentResponseDTO getAssignmentById(Long assignmentId) {
+    public Assignment getAssignmentById(Long assignmentId) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new IllegalArgumentException("과제를 찾을 수 없습니다."));
-        return assignment.build(assignment);
+        return assignment;
     }
 
     private Assignment convertToEntity(AssignmentRequestDTO assignmentDTO) {

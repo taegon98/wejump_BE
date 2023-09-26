@@ -37,7 +37,7 @@ public class AssignmentController {
     }
 
     @GetMapping("/{assignmentId}")
-    public AssignmentResponseDTO getCourseById(@PathVariable Long assignmentId) {
+    public Assignment getCourseById(@PathVariable Long assignmentId) {
         return assignmentService.getAssignmentById(assignmentId);
     }
 
