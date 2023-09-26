@@ -7,7 +7,6 @@ import wejump.server.domain.notice.Notice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import wejump.server.repository.NoticeRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

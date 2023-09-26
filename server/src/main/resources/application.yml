@@ -1,17 +1,20 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:mariadb://localhost:3306/wejump
-#    username: root
-#    password: root
     url: jdbc:mariadb://wejump.cglhadxlzhnk.ap-northeast-2.rds.amazonaws.com:3306/innodb
     username: admin
     password: jump772772
   jpa:
     hibernate:
       database-platform: org.hibernate.dialect.MariaDB103Dialect
-#      ddl-auto: update
-      ddl-auto: create
+      ddl-auto: none
     show_sql: true
   profiles:
     include: oauth
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+file:
+  upload:
+    path: C:/Users/82105/OneDrive/바탕 화면/test

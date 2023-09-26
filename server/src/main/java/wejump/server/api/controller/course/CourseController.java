@@ -1,4 +1,4 @@
-package wejump.server.api.controller;
+package wejump.server.api.controller.course;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -21,16 +21,6 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @GetMapping
-    public List<CourseResponseDTO> getAllCourses() {
-        return courseService.getAllCourses();
-    }
-
-    @GetMapping("/{courseId}")
-    public CourseResponseDTO getCourseById(@PathVariable Long courseId) {
-        return courseService.getCourseById(courseId);
-    }
-
     @PostMapping
     public ResponseEntity<Object> createCourse(@RequestBody @Valid CourseRequestDTO courseRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -44,6 +34,11 @@ public class CourseController {
 
         Course createdCourse = courseService.createCourse(courseRequestDTO);
         return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{courseId}")
+    public CourseResponseDTO getCourseById(@PathVariable Long courseId) {
+        return courseService.getCourseById(courseId);
     }
 
     @PutMapping("/{courseId}")
@@ -71,6 +66,7 @@ public class CourseController {
         }
     }
 
+    //수강 신청
     @PostMapping("/{courseId}/enroll/{memberId}")
     public ResponseEntity<Object> enrollMemberToCourse(
             @PathVariable Long courseId,
@@ -85,6 +81,7 @@ public class CourseController {
         }
     }
 
+    //과목 수강 인원 조회
     @GetMapping("{courseId}/members")
     public ResponseEntity<List<MemberResponseDTO>> getMembersEnrolledInCourse(@PathVariable Long courseId) {
         List<MemberResponseDTO> enrolledMembers = courseService.getMembersEnrolledInCourse(courseId)
@@ -93,6 +90,12 @@ public class CourseController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(enrolledMembers);
     }
+
+    @GetMapping
+    public List<CourseResponseDTO> getAllCourses() {
+        return courseService.getAllCourses();
+    }
+
 
 
 }

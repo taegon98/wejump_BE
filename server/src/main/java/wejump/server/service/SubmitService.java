@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import wejump.server.api.dto.assignment.AssignmentResponseDTO;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Submit;
 import wejump.server.repository.SubmitRepository;
@@ -22,11 +23,13 @@ public class SubmitService {
     private String uploadPath;
 
 
-    public Submit createSubmit(Assignment assignment, MultipartFile file, String comment) throws IOException {
+    public Submit createSubmit(AssignmentResponseDTO dto, MultipartFile file, String comment) throws IOException {
         // 업로드된 파일을 서버에 저장
         String fileName = file.getOriginalFilename();
         String filePath = saveFile(file);
 
+        Assignment assignment = new Assignment();
+        assignment.updateAssignment(dto.getTitle(), dto.getDescription(), dto.getStartDate(), dto.getDueDate());
         Submit submit = Submit.builder()
                 .assignment(assignment)
                 .file(file)
@@ -46,6 +49,7 @@ public class SubmitService {
         // 파일 저장
         Path destPath = Path.of(filePath);
         Files.copy(file.getInputStream(), destPath, StandardCopyOption.REPLACE_EXISTING);
+
 
         return filePath;
     }

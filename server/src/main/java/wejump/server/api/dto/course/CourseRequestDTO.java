@@ -16,10 +16,10 @@ public class CourseRequestDTO {
     @Positive(message = "수강 인원은 양수이어야 합니다.")
     private Integer quota;
 
-    @NotBlank(message = "시작 날짜는 필수입니다.")
+    @NotNull(message = "시작 날짜는 필수입니다.")
     private LocalDate start_date;
 
-    @NotBlank(message = "종료 날짜는 필수입니다.")
+    @NotNull(message = "종료 날짜는 필수입니다.")
     private LocalDate end_date;
 
     @NotBlank(message = "코스 설명은 필수입니다.")

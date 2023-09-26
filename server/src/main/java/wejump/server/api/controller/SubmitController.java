@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import wejump.server.api.dto.assignment.AssignmentResponseDTO;
 import wejump.server.api.dto.submit.SubmitRequestDTO;
-import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Submit;
 import wejump.server.service.AssignmentService;
 import wejump.server.service.SubmitService;
@@ -28,18 +28,10 @@ public class SubmitController {
     public ResponseEntity<?> createSubmit(
             @PathVariable Long assignmentId,
             @RequestParam("file") MultipartFile file,
-            @RequestBody @Valid SubmitRequestDTO submitDTO, BindingResult bindingResult
+            @RequestParam("comment") String comment
     ) throws IOException {
-        if (bindingResult.hasErrors()) {
-            List<String> errorMessages = bindingResult.getFieldErrors()
-                    .stream()
-                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                    .collect(Collectors.toList());
-            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
-        }
 
-        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
-        String comment = submitDTO.getComment();
+        AssignmentResponseDTO assignment = assignmentService.getAssignmentById(assignmentId);
 
         Submit submit = submitService.createSubmit(assignment, file, comment);
 

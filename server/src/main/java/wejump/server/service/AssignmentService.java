@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wejump.server.api.dto.assignment.AssignmentRequestDTO;
+import wejump.server.api.dto.assignment.AssignmentResponseDTO;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.repository.AssignmentRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -35,13 +37,15 @@ public class AssignmentService {
         // AssignmentDTO를 Assignment 엔티티로 변환하여 기존 Assignment 업데이트
         Assignment assignment = convertToEntity(assignmentDTO);
 
-        LocalDateTime startDate = parseDateTime(assignmentDTO.getStartDate());
-        LocalDateTime dueDate = parseDateTime(assignmentDTO.getEndDate());
+        LocalDate startDate = assignmentDTO.getStartDate();
+        LocalDate dueDate = assignmentDTO.getEndDate();
 
-        assignment.updateAssignment(assignmentDTO.getTitle(),
+        assignment.updateAssignment(
+                assignmentDTO.getTitle(),
                 assignment.getDescription(),
                 startDate,
-                dueDate);
+                dueDate
+        );
 
         // Assignment 업데이트
         return assignmentRepository.save(existingAssignment);
@@ -63,14 +67,15 @@ public class AssignmentService {
     }
 
     @Transactional(readOnly = true)
-    public Assignment getAssignmentById(Long assignmentId) {
-        return assignmentRepository.findById(assignmentId)
+    public AssignmentResponseDTO getAssignmentById(Long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new IllegalArgumentException("과제를 찾을 수 없습니다."));
+        return assignment.build(assignment);
     }
 
     private Assignment convertToEntity(AssignmentRequestDTO assignmentDTO) {
-        LocalDateTime startDate = parseDateTime(assignmentDTO.getStartDate());
-        LocalDateTime dueDate = parseDateTime(assignmentDTO.getEndDate());
+        LocalDate startDate = assignmentDTO.getStartDate();
+        LocalDate dueDate = assignmentDTO.getEndDate();
 
         return Assignment.builder()
                 .title(assignmentDTO.getTitle())
