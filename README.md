@@ -2,6 +2,7 @@
 
 ---
 ### ERD
-<img width="544" alt="image" src="https://github.com/taegon98/wejump_BE/assets/54783290/df542dd9-43b4-483c-95e1-ffa9c734176c">
+![image](https://github.com/Gyu-won/wejump/assets/54783290/15384ada-04e2-4d5a-8069-573f7b216586)
+
 
 
