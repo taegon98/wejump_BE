@@ -32,13 +32,13 @@ public class CourseService {
     public Course createCourse(CourseRequestDTO courseRequestDTO) {
 
         Course course = Course.builder()
-                .name("Course Name")
-                .quota(50)
-                .start_date(LocalDate.parse("2023.09.10"))
-                .end_date(LocalDate.parse("2023-12-31"))
-                .description("Course Description")
-                .summary("Course Summary")
-                .reference("Course Reference")
+                .name(courseRequestDTO.getName())
+                .quota(courseRequestDTO.getQuota())
+                .start_date(courseRequestDTO.getStart_date())
+                .end_date(courseRequestDTO.getStart_date())
+                .description(courseRequestDTO.getDescription())
+                .summary(courseRequestDTO.getSummary())
+                .reference(courseRequestDTO.getReference())
                 .build();
 
         // 필수 필드 확인

@@ -27,9 +27,6 @@ public class Submit {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Transient // 데이터베이스에 저장하지 않는 필드
-    private MultipartFile file;
-
     @Column(name = "file_path") // 파일 경로
     private String filePath;
 
