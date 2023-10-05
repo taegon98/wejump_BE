@@ -1,4 +1,4 @@
-package wejump.server.service.assignment;
+package wejump.server.service.course.assignment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Submit;
 import wejump.server.domain.member.Member;
-import wejump.server.repository.assignment.SubmitRepository;
+import wejump.server.repository.course.assignment.SubmitRepository;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;

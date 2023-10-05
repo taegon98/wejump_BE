@@ -7,9 +7,9 @@ import wejump.server.api.dto.course.syllabus.PlanDTO;
 import wejump.server.api.dto.course.syllabus.SyllabusDTO;
 import wejump.server.domain.course.Course;
 import wejump.server.domain.course.CoursePlan;
-import wejump.server.repository.course.CoursePlanRepository;
-import wejump.server.repository.course.CourseRepository;
-import wejump.server.repository.lesson.LessonRepository;
+import wejump.server.repository.course.course.CoursePlanRepository;
+import wejump.server.repository.course.course.CourseRepository;
+import wejump.server.repository.course.lesson.LessonRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

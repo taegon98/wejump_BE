@@ -1,4 +1,4 @@
-package wejump.server.service.assignment;
+package wejump.server.service.course.assignment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Evaluate;
 import wejump.server.domain.assignment.EvaluateId;
 import wejump.server.domain.course.EnrollCourse;
-import wejump.server.repository.assignment.EvaluateRepository;
+import wejump.server.repository.course.assignment.EvaluateRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package wejump.server.repository.assignment;
+package wejump.server.repository.course.assignment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

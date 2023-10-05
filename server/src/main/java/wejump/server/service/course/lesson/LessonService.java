@@ -1,4 +1,4 @@
-package wejump.server.service.lesson;
+package wejump.server.service.course.lesson;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wejump.server.api.dto.course.lesson.LessonRequestDTO;
 import wejump.server.domain.course.Course;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.repository.lesson.LessonRepository;
+import wejump.server.repository.course.lesson.LessonRepository;
 
 @Service
 @RequiredArgsConstructor

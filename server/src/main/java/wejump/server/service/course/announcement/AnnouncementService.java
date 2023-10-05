@@ -1,4 +1,4 @@
-package wejump.server.service.announcement;
+package wejump.server.service.course.announcement;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,8 +8,8 @@ import wejump.server.domain.course.Course;
 import wejump.server.domain.announcement.Announcement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import wejump.server.repository.course.CourseRepository;
-import wejump.server.repository.announcement.AnnouncementRepository;
+import wejump.server.repository.course.course.CourseRepository;
+import wejump.server.repository.course.announcement.AnnouncementRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package wejump.server.service.course;
+package wejump.server.service.course.course;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +9,8 @@ import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
 import wejump.server.domain.course.EnrollCourse;
 import wejump.server.domain.member.Member;
-import wejump.server.repository.course.CourseRepository;
-import wejump.server.repository.course.EnrollRepository;
+import wejump.server.repository.course.course.CourseRepository;
+import wejump.server.repository.course.course.EnrollRepository;
 import wejump.server.repository.member.MemberRepository;
 
 import java.util.List;

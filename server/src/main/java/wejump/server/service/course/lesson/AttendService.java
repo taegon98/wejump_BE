@@ -1,4 +1,4 @@
-package wejump.server.service.lesson;
+package wejump.server.service.course.lesson;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import wejump.server.domain.course.EnrollCourse;
 import wejump.server.domain.lesson.Attend;
 import wejump.server.domain.lesson.AttendId;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.repository.lesson.AttendRepository;
+import wejump.server.repository.course.lesson.AttendRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

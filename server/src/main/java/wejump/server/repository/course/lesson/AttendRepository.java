@@ -1,4 +1,4 @@
-package wejump.server.repository.lesson;
+package wejump.server.repository.course.lesson;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

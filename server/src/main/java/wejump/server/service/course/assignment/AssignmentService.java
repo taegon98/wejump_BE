@@ -1,13 +1,12 @@
-package wejump.server.service.assignment;
+package wejump.server.service.course.assignment;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.proxy.HibernateProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wejump.server.api.dto.course.assignment.AssignmentRequestDTO;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.repository.assignment.AssignmentRepository;
+import wejump.server.repository.course.assignment.AssignmentRepository;
 
 @Service
 @RequiredArgsConstructor

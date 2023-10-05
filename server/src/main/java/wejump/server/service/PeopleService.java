@@ -11,10 +11,10 @@ import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Evaluate;
 import wejump.server.domain.lesson.Attend;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.repository.assignment.AssignmentRepository;
-import wejump.server.repository.assignment.EvaluateRepository;
-import wejump.server.repository.lesson.LessonRepository;
-import wejump.server.repository.lesson.AttendRepository;
+import wejump.server.repository.course.assignment.AssignmentRepository;
+import wejump.server.repository.course.assignment.EvaluateRepository;
+import wejump.server.repository.course.lesson.LessonRepository;
+import wejump.server.repository.course.lesson.AttendRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;

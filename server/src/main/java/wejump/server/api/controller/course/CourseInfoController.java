@@ -17,11 +17,11 @@ import wejump.server.domain.course.Course;
 import wejump.server.domain.course.EnrollCourse;
 import wejump.server.domain.lesson.Attend;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.service.assignment.AssignmentService;
-import wejump.server.service.assignment.EvaluateService;
-import wejump.server.service.course.CourseService;
-import wejump.server.service.lesson.AttendService;
-import wejump.server.service.lesson.LessonService;
+import wejump.server.service.course.assignment.AssignmentService;
+import wejump.server.service.course.assignment.EvaluateService;
+import wejump.server.service.course.course.CourseService;
+import wejump.server.service.course.lesson.AttendService;
+import wejump.server.service.course.lesson.LessonService;
 
 import javax.validation.Valid;
 import java.util.List;
