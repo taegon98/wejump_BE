@@ -1,15 +1,15 @@
-package wejump.server.api.controller.course;
+package wejump.server.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import wejump.server.api.dto.course.CourseRequestDTO;
-import wejump.server.api.dto.course.CourseResponseDTO;
+import wejump.server.api.dto.course.course.CourseRequestDTO;
+import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.api.dto.member.MemberResponseDTO;
 import wejump.server.domain.course.Course;
-import wejump.server.service.CourseService;
+import wejump.server.service.course.CourseService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,11 +36,6 @@ public class CourseController {
         return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{courseId}")
-    public CourseResponseDTO getCourseById(@PathVariable Long courseId) {
-        return courseService.getCourseById(courseId);
-    }
-
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> updateCourse(@PathVariable Long courseId, @RequestBody @Valid CourseRequestDTO courseRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -64,31 +59,6 @@ public class CourseController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-    }
-
-    //수강 신청
-    @PostMapping("/{courseId}/enroll/{memberId}")
-    public ResponseEntity<Object> enrollMemberToCourse(
-            @PathVariable Long courseId,
-            @PathVariable Long memberId
-    ) {
-        try {
-            // 코스 ID와 멤버 ID를 사용하여 멤버를 코스에 등록
-            courseService.enrollMemberToCourse(courseId, memberId);
-            return new ResponseEntity<>("Member enrolled successfully", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
-
-    //과목 수강 인원 조회
-    @GetMapping("{courseId}/members")
-    public ResponseEntity<List<MemberResponseDTO>> getMembersEnrolledInCourse(@PathVariable Long courseId) {
-        List<MemberResponseDTO> enrolledMembers = courseService.getMembersEnrolledInCourse(courseId)
-                .stream()
-                .map(MemberResponseDTO::new) // Member를 MemberResponseDTO로 매핑
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(enrolledMembers);
     }
 
     @GetMapping

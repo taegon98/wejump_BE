@@ -14,6 +14,8 @@ public class MemberProfile {
 
     private String nickname;
 
+    private String image;
+
     public Member toMember() {
         return Member.builder()
                 .name(name)

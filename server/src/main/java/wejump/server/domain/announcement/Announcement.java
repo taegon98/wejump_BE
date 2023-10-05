@@ -2,7 +2,7 @@ package wejump.server.domain.announcement;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import wejump.server.api.dto.announcement.AnnouncementRequestDTO;
+import wejump.server.api.dto.course.announcement.AnnouncementRequestDTO;
 import wejump.server.domain.course.Course;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,29 +14,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Slf4j
-@Table(name="notice")
+@Table(name="announcement")
 public class Announcement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idnotice")
-    private Long announcementId;
+    @Column(name = "announcement_id")
+    private Long id;
 
-    @Column(name="title")
+    @Column(name="title", nullable = false)
     private String title;
 
-    @Column(name="content")
+    @Column(name="content", nullable = false)
     private String content;
 
-    @Column(name="announcement_date")
-    private LocalDateTime announcementDate;
+    @Column(name="date", nullable = false)
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="course_idcourse")
+    @JoinColumn(name="course_id")
     private Course course;
-
-    /*@Column(name="course_idcourse")
-    private Long courseId;*/
 
     public void patch(AnnouncementRequestDTO dto) {
 
@@ -54,10 +51,10 @@ public class Announcement {
             throw new IllegalArgumentException("공지 생성 실패! 공지의 id가 없어야 합니다.");
         // 엔티티 생성 및 반환
         return Announcement.builder().
-                announcementId(dto.getAnnouncementId())
+                id(dto.getAnnouncementId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
-                .announcementDate(dto.getAnnouncementDate())
+                .date(dto.getAnnouncementDate())
                 .course(course)
                 .build();
     }

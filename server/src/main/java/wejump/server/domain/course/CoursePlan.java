@@ -37,7 +37,6 @@ public class CoursePlan {
     private Boolean assignment = false;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "course_id")
     private Course course;
 }

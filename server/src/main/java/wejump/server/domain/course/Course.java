@@ -1,21 +1,20 @@
 package wejump.server.domain.course;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.lesson.Lesson;
-import wejump.server.api.dto.course.CourseResponseDTO;
+import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.member.Member;
+import wejump.server.domain.announcement.Announcement;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @DynamicUpdate
 @Entity
@@ -33,35 +32,35 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "quota", nullable = false)
-    private Integer quota;
-
-    @Column(name = "start", nullable = false)
+    @Column(name = "start", nullable = true)
     private LocalDate start_date;
 
-    @Column(name = "end", nullable = false)
+    @Column(name = "end", nullable = true)
     private LocalDate end_date;
 
-    @Column(name = "description", length = 200, nullable = false)
+    @Column(name = "description", nullable = true)
     private String description;
 
-    @Column(name = "summary", length = 100, nullable = false)
+    @Column(name = "summary", nullable = true)
     private String summary;
 
     @Column(name = "reference", nullable = true)
     private String reference;
 
-    @JsonBackReference
+    @Column(name = "course_image", nullable = true)
+    private String image;
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Lesson> lessons;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CoursePlan> plans;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EnrollCourse> enrolledCourses = new ArrayList<>();
+    private List<EnrollCourse> enrolledCourses;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Announcement> announcements;
 
     /*
      ****************************************비지니스 로직****************************************
@@ -69,15 +68,15 @@ public class Course {
 
     // 비즈니스 로직을 통해 필드 값 변경
     
-    public void updateCourseInfo(String name, Integer quota, LocalDate start_date, LocalDate end_date, String description, String summary, String reference) {
+    public void updateCourseInfo(String name, LocalDate start_date, LocalDate end_date, String description, String summary, String reference, String image) {
 
         this.name = name;
-        this.quota = quota;
         this.start_date = start_date;
         this.end_date = end_date;
         this.description = description;
         this.summary = summary;
         this.reference = reference;
+        this.image = image;
     }
 
 //syllabus 에서 update
@@ -90,12 +89,12 @@ public class Course {
 
         return CourseResponseDTO.builder()
                 .name(course.getName())
-                .quota(course.getQuota())
                 .startDate(course.getStart_date())
                 .endDate(course.getEnd_date())
                 .description(course.getDescription())
                 .summary(course.getSummary())
                 .reference(course.getReference())
+                .image(course.getImage())
                 .build();
     }
 

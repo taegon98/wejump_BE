@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.member.Member;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,29 +19,25 @@ import java.util.stream.Collectors;
 @Getter
 @Table(name = "enroll_course")
 @Builder
-public class EnrollCourse {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "enroll_id")
-    private Long id;
+public class EnrollCourse implements Serializable {
+
+    @EmbeddedId
+    private EnrollCourseId id;
 
     @Column(name = "date", nullable = true)
     private String date;
 
-    @Column(name = "instructor", nullable = true)
-    private Boolean instructor;
+    @Builder.Default
+    @Column(name = "is_instructor", nullable = false)
+    private Boolean instructor = false;
 
     @ManyToOne
-    @JsonManagedReference
+    @MapsId("memberId")
     @JoinColumn(name = "member_id") // Member 엔티티의 외래 키
     private Member member;
 
     @ManyToOne
-    @JsonManagedReference
+    @MapsId("courseId")
     @JoinColumn(name = "course_id") // Course 엔티티의 외래 키
     private Course course;
-
-    /*
-     ****************************************비지니스 로직****************************************
-     */
 }

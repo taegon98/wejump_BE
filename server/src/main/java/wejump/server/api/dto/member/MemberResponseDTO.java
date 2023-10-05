@@ -9,11 +9,13 @@ public class MemberResponseDTO {
     private String name;
     private String email;
     private String nickname;
+    private String image;
 
     public MemberResponseDTO(Member member) {
         this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
         this.nickname = member.getNickname();
+        this.image = member.getImage();
     }
 }

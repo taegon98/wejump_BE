@@ -3,16 +3,13 @@ package wejump.server.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wejump.server.api.dto.lesson.LessonRequestDTO;
-import wejump.server.api.dto.lesson.LessonResponseDTO;
-import wejump.server.api.dto.syllabus.PlanDTO;
-import wejump.server.api.dto.syllabus.SyllabusDTO;
+import wejump.server.api.dto.course.syllabus.PlanDTO;
+import wejump.server.api.dto.course.syllabus.SyllabusDTO;
 import wejump.server.domain.course.Course;
 import wejump.server.domain.course.CoursePlan;
-import wejump.server.domain.lesson.Lesson;
-import wejump.server.repository.CoursePlanRepository;
-import wejump.server.repository.CourseRepository;
-import wejump.server.repository.LessonRepository;
+import wejump.server.repository.course.CoursePlanRepository;
+import wejump.server.repository.course.CourseRepository;
+import wejump.server.repository.lesson.LessonRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,53 +71,21 @@ public class SyllabusService {
         return coursePlanRepository.saveAll(plans);
     }
 
-    //이 아래는 일단 놔둘 것
-    @Transactional
-    public Lesson createLesson (Long courseId,LessonRequestDTO lessonRequestDTO){
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IllegalArgumentException("cannot find course"));
 
-        Lesson lesson = Lesson.builder()
-                .week(lessonRequestDTO.getWeek())
-                .name(lessonRequestDTO.getName())
-                .content(lessonRequestDTO.getContent())
-                .start(lessonRequestDTO.getStart())
-                .course(course)
-                .build();
-
-        return lessonRepository.save(lesson);
-    }
-
-    @Transactional
-    public Lesson updateLesson(Long lessonId, LessonRequestDTO lessonRequestDTO){
-        Lesson existingLesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new IllegalArgumentException("cannot find lesson"));
-
-        existingLesson.updateLessonInfo(lessonRequestDTO.getWeek(),
-                lessonRequestDTO.getName(),
-                lessonRequestDTO.getContent(),
-                lessonRequestDTO.getStart());
-
-        return lessonRepository.save(existingLesson);
-    }
-
-    @Transactional
-    public void deleteLesson(Long lessonId){
-        Lesson lessonToDelete = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new IllegalArgumentException("cannot find lesson"));
-
-        lessonRepository.delete(lessonToDelete);
-    }
-
-    public LessonResponseDTO createLessonDTO(Lesson lesson){
-        return LessonResponseDTO.builder()
-                .id(lesson.getId())
-                .week(lesson.getWeek())
-                .start(lesson.getStart())
-                .name(lesson.getName())
-                .content(lesson.getContent())
-                .build();
-    }
+//    //수강 신청
+//    @PostMapping("/{courseId}/enroll/{memberId}")
+//    public ResponseEntity<Object> enrollMemberToCourse(
+//            @PathVariable Long courseId,
+//            @PathVariable Long memberId
+//    ) {
+//        try {
+//            // 코스 ID와 멤버 ID를 사용하여 멤버를 코스에 등록
+//            courseService.enrollMemberToCourse(courseId, memberId);
+//            return new ResponseEntity<>("Member enrolled successfully", HttpStatus.OK);
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     public SyllabusDTO createSyllabusDTO(Course course, List<PlanDTO> plans){
         return SyllabusDTO.builder()
