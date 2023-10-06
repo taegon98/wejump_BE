@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 public class SubmitResponseDTO {
     private SubmitId submitId;
 
+    private String name;
+
     private String filename;
 
     private LocalDateTime submissionTime;

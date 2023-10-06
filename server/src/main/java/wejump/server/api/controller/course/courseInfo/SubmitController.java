@@ -18,6 +18,8 @@ import wejump.server.service.course.assignment.SubmitService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -59,8 +61,22 @@ public class SubmitController {
 
 
     //모든 제출 조회
+    @GetMapping
+    public List<SubmitResponseDTO> getAllSubmit(@PathVariable Long assignmentId){
 
-    
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        List<Submit> submits = assignment.getSubmits();
+
+        if (!submits.isEmpty()){
+            List<SubmitResponseDTO> submitResponseDTOS= assignment.getSubmits().stream()
+                    .map(submitService::createSubmitResponseDTO)
+                    .collect(Collectors.toList());
+
+            return submitResponseDTOS;
+        }
+        return null;
+    }
+
     @GetMapping("/{memberId}/download")
     public ResponseEntity<Resource> downloadFile(@PathVariable Long assignmentId,
                                                  @PathVariable Long memberId) throws MalformedURLException {
@@ -81,7 +97,7 @@ public class SubmitController {
     }
 
 
-    @DeleteMapping("/{assignmentId}/{memberId}")
+    @DeleteMapping("/{memberId}")
     public ResponseEntity<?> deleteSubmit(@PathVariable Long assignmentId,
                                           @PathVariable Long memberId) {
         try {

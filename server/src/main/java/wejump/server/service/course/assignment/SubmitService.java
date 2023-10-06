@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.expression.spel.ast.Assign;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import wejump.server.api.dto.course.submit.SubmitResponseDTO;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -86,12 +88,15 @@ public class SubmitService {
         return submitRepository.findById(submitId).orElse(null);
     }
 
+
+
     public SubmitResponseDTO createSubmitResponseDTO(Submit submit){
         String filePath = submit.getFilePath();
         String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
 
         SubmitResponseDTO submitResponseDTO = SubmitResponseDTO.builder()
                 .submitId(submit.getId())
+                .name(submit.getMember().getName())
                 .filename(fileName)
                 .submissionTime(submit.getSubmissionTime())
                 .comment(submit.getComment())
