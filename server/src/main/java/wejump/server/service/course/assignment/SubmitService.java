@@ -7,8 +7,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import wejump.server.api.dto.course.submit.SubmitResponseDTO;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Submit;
+import wejump.server.domain.assignment.SubmitId;
 import wejump.server.domain.member.Member;
 import wejump.server.repository.course.assignment.SubmitRepository;
 import java.io.IOException;
@@ -33,7 +35,9 @@ public class SubmitService {
         String fileName = file.getOriginalFilename();
         String filePath = saveFile(file);
 
+        SubmitId submitId = new SubmitId(assignment.getId(), member.getId());
         Submit submit = Submit.builder()
+                .id(submitId)
                 .assignment(assignment)
                 .member(member)
                 .filePath(filePath)
@@ -67,15 +71,36 @@ public class SubmitService {
             throw new IllegalArgumentException("파일을 찾을 수 없습니다: " + fileName);
         }
     }
+//
+//    public void deleteSubmit(Long submitId) {
+//        Submit submit = submitRepository.findById(submitId)
+//                .orElseThrow(() -> new IllegalArgumentException("제출을 찾을 수 없습니다."));
+//        submitRepository.delete(submit);
+//    }
+//
+//    public Submit getSubmitById(Long submitId) {
+//        return submitRepository.findById(submitId)
+//                .orElseThrow(() -> new IllegalArgumentException("Not Found, submitId: " + submitId));
+//    }
 
-    public void deleteSubmit(Long submitId) {
-        Submit submit = submitRepository.findById(submitId)
-                .orElseThrow(() -> new IllegalArgumentException("제출을 찾을 수 없습니다."));
-        submitRepository.delete(submit);
+    public Submit findSubmit(Long assignmentId, Long memberId){
+
+        SubmitId submitId = new SubmitId(assignmentId, memberId);
+
+        return submitRepository.findById(submitId).orElse(null);
     }
 
-    public Submit getSubmitById(Long submitId) {
-        return submitRepository.findById(submitId)
-                .orElseThrow(() -> new IllegalArgumentException("Not Found, submitId: " + submitId));
+    public SubmitResponseDTO createSubmitResponseDTO(Submit submit){
+        String filePath = submit.getFilePath();
+        String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+
+        SubmitResponseDTO submitResponseDTO = SubmitResponseDTO.builder()
+                .submitId(submit.getId())
+                .filename(fileName)
+                .submissionTime(submit.getSubmissionTime())
+                .comment(submit.getComment())
+                .build();
+
+        return submitResponseDTO;
     }
 }

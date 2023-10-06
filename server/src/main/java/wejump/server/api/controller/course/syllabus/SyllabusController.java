@@ -1,4 +1,4 @@
-package wejump.server.api.controller.course;
+package wejump.server.api.controller.course.syllabus;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

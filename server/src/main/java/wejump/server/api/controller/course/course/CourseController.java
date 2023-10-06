@@ -1,4 +1,4 @@
-package wejump.server.api.controller;
+package wejump.server.api.controller.course.course;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
