@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wejump.server.api.dto.course.submit.SubmitResponseDTO;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Submit;
+import wejump.server.domain.assignment.SubmitId;
 import wejump.server.domain.member.Member;
 import wejump.server.repository.member.MemberRepository;
 import wejump.server.service.course.assignment.AssignmentService;
@@ -20,14 +21,14 @@ import java.net.MalformedURLException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/courses/submits")
+@RequestMapping("/courses/submits/{assignmentId}")
 public class SubmitController {
 
     private final SubmitService submitService;
     private final AssignmentService assignmentService;
     private final MemberRepository memberRepository;
 
-    @PostMapping("/{assignmentId}/{memberId}")
+    @PostMapping("/{memberId}")
     public ResponseEntity<Object> createSubmit(
             @PathVariable Long assignmentId,
             @PathVariable Long memberId,
@@ -43,11 +44,11 @@ public class SubmitController {
         return new ResponseEntity<>("submit success", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{assignmentId}/{memberId}")
+    @GetMapping("/{memberId}")
     public SubmitResponseDTO getSubmit(@PathVariable Long assignmentId,
                                        @PathVariable Long memberId){
 
-        Submit submit = submitService.findSubmit(assignmentId, memberId);
+        Submit submit = submitService.getSubmitById(assignmentId, memberId);
         if (submit != null){
             SubmitResponseDTO submitResponseDTO = submitService.createSubmitResponseDTO(submit);
             return submitResponseDTO;
@@ -60,31 +61,36 @@ public class SubmitController {
     //모든 제출 조회
 
     
-    // 이거 submitId 보고 submitId가 Long이 아니라 SubmitId 객체인거롤 수정해야함
+    @GetMapping("/{memberId}/download")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long assignmentId,
+                                                 @PathVariable Long memberId) throws MalformedURLException {
+        // 파일 경로를 얻기
+        Submit submit = submitService.getSubmitById(assignmentId, memberId);
 
-//    @GetMapping("/{submitId}")
-//    public ResponseEntity<Resource> downloadFile(@PathVariable Long submitId) throws MalformedURLException {
-//        // 파일 경로를 얻기
-//        Submit submit = submitService.getSubmitById(submitId);
-//
-//        String filePath = submit.getFilePath();
-//
-//        // Resource 객체 생성
-//        Resource resource = submitService.loadFileAsResource(filePath);
-//
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-//                .body(resource);
-//    }
-//
-//
-//    @DeleteMapping("/{submitId}")
-//    public ResponseEntity<?> deleteSubmit(@PathVariable Long submitId) {
-//        try {
-//            submitService.deleteSubmit(submitId);
-//            return new ResponseEntity<>("삭제되었습니다.", HttpStatus.OK);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//    }
+        if (submit == null){
+            throw new IllegalArgumentException("Not Found, submit");
+        }
+        String filePath = submit.getFilePath();
+
+        // Resource 객체 생성
+        Resource resource = submitService.loadFileAsResource(filePath);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+
+    @DeleteMapping("/{assignmentId}/{memberId}")
+    public ResponseEntity<?> deleteSubmit(@PathVariable Long assignmentId,
+                                          @PathVariable Long memberId) {
+        try {
+            SubmitId submitId = new SubmitId(assignmentId, memberId);
+
+            submitService.deleteSubmit(submitId);
+            return new ResponseEntity<>("삭제되었습니다.", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

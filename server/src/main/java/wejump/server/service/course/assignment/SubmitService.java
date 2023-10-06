@@ -71,19 +71,15 @@ public class SubmitService {
             throw new IllegalArgumentException("파일을 찾을 수 없습니다: " + fileName);
         }
     }
-//
-//    public void deleteSubmit(Long submitId) {
-//        Submit submit = submitRepository.findById(submitId)
-//                .orElseThrow(() -> new IllegalArgumentException("제출을 찾을 수 없습니다."));
-//        submitRepository.delete(submit);
-//    }
-//
-//    public Submit getSubmitById(Long submitId) {
-//        return submitRepository.findById(submitId)
-//                .orElseThrow(() -> new IllegalArgumentException("Not Found, submitId: " + submitId));
-//    }
 
-    public Submit findSubmit(Long assignmentId, Long memberId){
+    public void deleteSubmit(SubmitId submitId) {
+        Submit submit = submitRepository.findById(submitId)
+                .orElseThrow(() -> new IllegalArgumentException("제출을 찾을 수 없습니다."));
+        submitRepository.delete(submit);
+    }
+
+
+    public Submit getSubmitById(Long assignmentId, Long memberId){
 
         SubmitId submitId = new SubmitId(assignmentId, memberId);
 
