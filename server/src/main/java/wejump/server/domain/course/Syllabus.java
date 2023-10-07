@@ -1,6 +1,5 @@
 package wejump.server.domain.course;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,15 +10,15 @@ import javax.persistence.*;
 
 @DynamicUpdate
 @Entity
-@Table(name = "course_plan")
+@Table(name = "syllabus")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoursePlan {
+public class Syllabus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "plan_id")
+    @Column(name = "syllabus_id")
     private Long id;
 
     @Column(name = "week", nullable = false)
@@ -28,15 +27,20 @@ public class CoursePlan {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Builder.Default
-    @Column(name = "video", nullable = false)
-    private Boolean video = false;
+    @Column(name = "video")
+    private Boolean video;
 
-    @Builder.Default
-    @Column(name = "assignment", nullable = false)
-    private Boolean assignment = false;
+    @Column(name = "assignment")
+    private Boolean assignment;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    public void updateSyllabusInfo(Integer week, String title, Boolean video, Boolean assignment){
+        this.week = week;
+        this.title = title;
+        this.video = video;
+        this.assignment = assignment;
+    }
 }

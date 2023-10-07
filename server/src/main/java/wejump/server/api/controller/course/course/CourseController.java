@@ -35,6 +35,7 @@ public class CourseController {
         return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> updateCourse(@PathVariable Long courseId, @RequestBody @Valid CourseRequestDTO courseRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

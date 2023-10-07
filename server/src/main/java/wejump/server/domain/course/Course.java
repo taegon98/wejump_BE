@@ -54,7 +54,7 @@ public class Course {
     private List<Lesson> lessons;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CoursePlan> plans;
+    private List<Syllabus> syllabuses;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses;

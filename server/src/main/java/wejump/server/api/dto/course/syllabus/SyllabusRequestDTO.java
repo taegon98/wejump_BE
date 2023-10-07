@@ -1,6 +1,5 @@
 package wejump.server.api.dto.course.syllabus;
 
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
-public class PlanDTO {
+public class SyllabusRequestDTO {
 
     @NotNull(message = "week는 필수 입니다.")
     private Integer week;
