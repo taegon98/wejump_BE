@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("course/syllabus")
+@RequestMapping("courses/syllabus")
 @RequiredArgsConstructor
 public class SyllabusController {
     private final CourseService courseService;

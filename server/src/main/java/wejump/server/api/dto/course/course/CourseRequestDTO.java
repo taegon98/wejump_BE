@@ -3,7 +3,6 @@ package wejump.server.api.dto.course.course;
 import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 @Getter
@@ -27,4 +26,6 @@ public class CourseRequestDTO {
     private String reference;
 
     private String image;
+
+
 }

@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @DynamicUpdate
@@ -50,17 +51,21 @@ public class Course {
     @Column(name = "course_image", nullable = true)
     private String image;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Lesson> lessons;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member instructor;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Syllabus> syllabuses;
+    private List<Lesson> lessons = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EnrollCourse> enrolledCourses;
+    private List<Syllabus> syllabuses = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Announcement> announcements;
+    private List<EnrollCourse> enrolledCourses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Announcement> announcements = new ArrayList<>();
 
     /*
      ****************************************비지니스 로직****************************************
@@ -79,12 +84,6 @@ public class Course {
         this.image = image;
     }
 
-//syllabus 에서 update
-    public void updateCourseInfo(String summary, String reference){
-        this.summary = summary;
-        this.reference = reference;
-    }
-
     public CourseResponseDTO build(Course course) {
 
         return CourseResponseDTO.builder()
@@ -97,35 +96,4 @@ public class Course {
                 .image(course.getImage())
                 .build();
     }
-
-    /*
-     ****************************************비지니스 로직****************************************
-     */
-
-
-    // 코스에 멤버를 등록하는 메서드
-    public void addMember(Member member) {
-        // 이미 등록된 멤버인지 체크
-        if (!enrolledCourses.contains(member)) {
-            LocalDateTime enrollDate = LocalDateTime.now();
-
-            // yyyy-MM-dd 형식 포맷팅
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedDate = enrollDate.format(formatter);
-
-            EnrollCourse enrollCourse = EnrollCourse.builder()
-                    .course(this)
-                    .member(member)
-                    .date(formattedDate)
-                    .instructor(true)
-                    .build();
-
-            enrolledCourses.add(enrollCourse);
-
-            // 멤버의 등록된 코스 목록에도 추가
-            member.getEnrolledCourses().add(enrollCourse);
-        }
-    }
-
-
 }

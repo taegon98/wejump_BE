@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface EnrollRepository extends JpaRepository<EnrollCourse, EnrollCourseId> {
     List<EnrollCourse> findAllByCourseId(Long courseId);
+    List<EnrollCourse> findAllByCourseIdAndAcceptedFalse(Long courseId);
+    List<EnrollCourse> findAllByCourseIdAndAcceptedTrue(Long courseId);
 }

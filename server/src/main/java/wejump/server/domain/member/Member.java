@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.assignment.Submit;
+import wejump.server.domain.course.Course;
 import wejump.server.domain.course.EnrollCourse;
 import wejump.server.domain.lesson.Attend;
 
@@ -39,10 +40,13 @@ public class Member {
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Submit> submits;
+    private List<Submit> submits = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attend> attends;
+    private List<Attend> attends = new ArrayList<>();
+
+    @OneToMany(mappedBy = "instructor")
+    private List<Course> instructedCourses = new ArrayList<>();
 
     @Builder
     public Member(Long id, String name, String email, String nickname, String image) {

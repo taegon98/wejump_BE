@@ -1,4 +1,4 @@
-package wejump.server.api.controller.course.courseInfo;
+package wejump.server.api.controller.course.courseMaterial;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;

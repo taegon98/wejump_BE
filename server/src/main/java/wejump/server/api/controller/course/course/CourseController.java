@@ -5,6 +5,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import wejump.server.api.dto.course.course.CourseInfoResponseDTO;
 import wejump.server.api.dto.course.course.CourseRequestDTO;
 import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
@@ -64,6 +65,13 @@ public class CourseController {
     @GetMapping
     public List<CourseResponseDTO> getAllCourses() {
         return courseService.getAllCourses();
+    }
+
+
+    @GetMapping("/{courseId}")
+    public CourseInfoResponseDTO getCourseInfo(@PathVariable Long courseId){
+        Course course = courseService.getCourseById(courseId);
+        return courseService.createCourseInfoResponseDTO(course);
     }
 
 

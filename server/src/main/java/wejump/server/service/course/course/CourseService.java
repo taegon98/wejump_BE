@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wejump.server.api.dto.course.course.CourseInfoResponseDTO;
 import wejump.server.api.dto.course.course.CourseRequestDTO;
 import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
@@ -22,10 +23,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class CourseService {
     private final CourseRepository courseRepository;
-
-    private final MemberRepository memberRepository;
-
-    private final EnrollRepository enrollRepository;
 
     @Transactional
     public Course createCourse(CourseRequestDTO courseRequestDTO) {
@@ -108,28 +105,15 @@ public class CourseService {
         }
     }
 
-    @Transactional
-    public void enrollMemberToCourse(Long courseId, Long memberId) {
-        // 코스 ID로 해당 코스 조회
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
 
-        // 멤버 ID로 해당 멤버 조회
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("멤버를 찾을 수 없습니다."));
-
-        // 코스에 멤버를 등록
-        course.addMember(member);
+    public CourseInfoResponseDTO createCourseInfoResponseDTO(Course course){
+        return CourseInfoResponseDTO.builder()
+                .name(course.getName())
+                .instructorName(course.getInstructor().getName())
+                .summary(course.getSummary())
+                .description(course.getDescription())
+                .reference(course.getReference())
+                .build();
     }
-
-    public List<Member> getMembersEnrolledInCourse(Long courseId) {
-        List<EnrollCourse> enrollCourses = enrollRepository.findAllByCourseId(courseId);
-        List<Member> enrolledMembers = enrollCourses.stream()
-                .map(EnrollCourse::getMember)
-                .collect(Collectors.toList());
-
-        return enrolledMembers;
-    }
-
 
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import wejump.server.domain.member.Member;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,11 +26,11 @@ public class EnrollCourse implements Serializable {
     private EnrollCourseId id;
 
     @Column(name = "date", nullable = true)
-    private String date;
+    private LocalDate date;
 
     @Builder.Default
-    @Column(name = "is_instructor", nullable = false)
-    private Boolean instructor = false;
+    @Column(name = "accepted", nullable = false)
+    private Boolean accepted = false;
 
     @ManyToOne
     @MapsId("memberId")
@@ -40,4 +41,9 @@ public class EnrollCourse implements Serializable {
     @MapsId("courseId")
     @JoinColumn(name = "course_id") // Course 엔티티의 외래 키
     private Course course;
+
+    public void updateEnroll(){
+        this.accepted = true;
+    }
+
 }

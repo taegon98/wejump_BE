@@ -1,4 +1,4 @@
-package wejump.server.api.controller.course.courseInfo;
+package wejump.server.api.controller.course.courseMaterial;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,8 +8,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import wejump.server.api.dto.course.assignment.AssignmentRequestDTO;
 import wejump.server.api.dto.course.assignment.AssignmentResponseDTO;
-import wejump.server.api.dto.course.courseInfo.CourseInfoRequestDTO;
-import wejump.server.api.dto.course.courseInfo.CourseInfoResponseDTO;
+import wejump.server.api.dto.course.courseMaterial.CourseMaterialRequestDTO;
+import wejump.server.api.dto.course.courseMaterial.CourseMaterialResponseDTO;
 import wejump.server.api.dto.course.lesson.LessonRequestDTO;
 import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Evaluate;
@@ -17,9 +17,11 @@ import wejump.server.domain.course.Course;
 import wejump.server.domain.course.EnrollCourse;
 import wejump.server.domain.lesson.Attend;
 import wejump.server.domain.lesson.Lesson;
+import wejump.server.repository.course.course.EnrollRepository;
 import wejump.server.service.course.assignment.AssignmentService;
 import wejump.server.service.course.assignment.EvaluateService;
 import wejump.server.service.course.course.CourseService;
+import wejump.server.service.course.course.EnrollService;
 import wejump.server.service.course.lesson.AttendService;
 import wejump.server.service.course.lesson.LessonService;
 
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/courses")
 @RequiredArgsConstructor
-public class CourseInfoController {
+public class CourseMaterialController {
 
     private final CourseService courseService;
     private final LessonService lessonService;
@@ -38,10 +40,12 @@ public class CourseInfoController {
     private final AssignmentService assignmentService;
     private final EvaluateService evaluateService;
 
+    private final EnrollRepository enrollRepository;
+
     // create Week
     @PostMapping("/material/{courseId}")
     public ResponseEntity<Object> createCourseInfo(@PathVariable Long courseId,
-                                               @RequestBody @Valid CourseInfoRequestDTO courseInfoRequestDTO,
+                                               @RequestBody @Valid CourseMaterialRequestDTO courseMaterialRequestDTO,
                                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errorMessages = bindingResult.getFieldErrors()
@@ -55,16 +59,16 @@ public class CourseInfoController {
         Course course = courseService.getCourseById(courseId);
 
         // 해당 course를 수강하는 학생 찾기
-        List<EnrollCourse> enrollCourses = course.getEnrolledCourses();
+        List<EnrollCourse> enrollCourses = enrollRepository.findAllByCourseIdAndAcceptedTrue(courseId);
         if (enrollCourses.isEmpty()) {
             throw new IllegalArgumentException("No students enrolled in this course");
         }
 
-        Lesson lesson = lessonService.createLesson(course, courseInfoRequestDTO.getLessonRequestDTO());
+        Lesson lesson = lessonService.createLesson(course, courseMaterialRequestDTO.getLessonRequestDTO());
         List<Attend> attends = attendService.createAttend(lesson, enrollCourses);
 
-        if (courseInfoRequestDTO.getAssignmentRequestDTO() != null) {
-            Assignment assignment = assignmentService.createAssignment(lesson, courseInfoRequestDTO.getAssignmentRequestDTO());
+        if (courseMaterialRequestDTO.getAssignmentRequestDTO() != null) {
+            Assignment assignment = assignmentService.createAssignment(lesson, courseMaterialRequestDTO.getAssignmentRequestDTO());
             List<Evaluate> evaluates = evaluateService.createEvaluate(assignment, enrollCourses);
         }
 
@@ -74,14 +78,14 @@ public class CourseInfoController {
 
     // read All Week
     @GetMapping("/material/{courseId}")
-    public List<CourseInfoResponseDTO> getCourseInfo(@PathVariable Long courseId){
+    public List<CourseMaterialResponseDTO> getCourseInfo(@PathVariable Long courseId){
         // 해당 course 찾기
         Course course = courseService.getCourseById(courseId);
 
         List<Lesson> lessons = course.getLessons();
         
         // lesson에 해당하는 assignment 찾아서 만들면 될듯
-        List<CourseInfoResponseDTO> courseInfoResponseDTOS = lessons.stream()
+        List<CourseMaterialResponseDTO> courseMaterialResponseDTOS = lessons.stream()
                 .map(lesson -> {
                     Assignment assignment = lesson.getAssignment();
                     AssignmentResponseDTO assignmentResponseDTO = null;
@@ -92,7 +96,7 @@ public class CourseInfoController {
                                 .end((assignment.getEnd()))
                                 .build();
                     }
-                    return CourseInfoResponseDTO.builder()
+                    return CourseMaterialResponseDTO.builder()
                             .week(lesson.getWeek())
                             .start(lesson.getStart())
                             .video(lesson.getVideo())
@@ -101,7 +105,7 @@ public class CourseInfoController {
                 })
                 .collect(Collectors.toList());
 
-        return courseInfoResponseDTOS;
+        return courseMaterialResponseDTOS;
     }
 
 

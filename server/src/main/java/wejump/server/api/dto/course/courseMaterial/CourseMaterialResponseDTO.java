@@ -1,4 +1,4 @@
-package wejump.server.api.dto.course.courseInfo;
+package wejump.server.api.dto.course.courseMaterial;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class CourseInfoResponseDTO {
+public class CourseMaterialResponseDTO {
 
     private Integer week;
 
