@@ -48,7 +48,7 @@ public class Course {
     @Column(name = "reference", nullable = true)
     private String reference;
 
-    @Column(name = "course_image", nullable = true)
+    @Column(name = "image", nullable = true)
     private String image;
 
     @ManyToOne

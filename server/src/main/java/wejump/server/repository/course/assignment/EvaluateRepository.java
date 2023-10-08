@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface EvaluateRepository extends JpaRepository<Evaluate, EvaluateId> {
     List<Evaluate> findAllByAssignmentIdOrderByName(Long assignmentId);
+    List<Evaluate> findAllByAssignmentIdAndMemberId(Long assignmentId, Long memberId);
 }

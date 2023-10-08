@@ -33,14 +33,14 @@ public class PeopleController {
         return peopleService.getAllPeopleById(courseId);
     }
 
-//    @GetMapping("/{courseId}/{memberId}")
-//    public PeopleResponseDTO getPeopleById(@PathVariable Long courseId,
-//                                           @PathVariable Long memberId){
-//
-//        Course course = courseService.getCourseById(courseId);
-//
-//        return peopleService.getPeopleById(courseId, memberId);
-//    }
+    @GetMapping("/{courseId}/{memberId}")
+    public List<PeopleResponseDTO> getPeopleById(@PathVariable Long courseId,
+                                           @PathVariable Long memberId){
+
+        Course course = courseService.getCourseById(courseId);
+
+        return peopleService.getPeopleById(courseId, memberId);
+    }
 
     @PutMapping
     public ResponseEntity<Object> updatePeople(@RequestBody @Valid List<PeopleRequestDTO> peopleRequestDTOS,
