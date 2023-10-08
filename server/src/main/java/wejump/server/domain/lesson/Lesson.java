@@ -1,7 +1,5 @@
 package wejump.server.domain.lesson;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,31 +28,26 @@ public class Lesson {
     @Column(nullable = false)
     private Integer week;
 
-    @Column(nullable = false)
-    private String name;
+    @Column
+    private String video;
 
-    @Column(nullable = false)
-    private String content;
-
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate start;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Status> inCourses;
+    private List<Attend> inCourses;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @OneToOne(mappedBy = "lesson")
+
+    @OneToOne(mappedBy = "lesson", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Assignment assignment;
 
-    public void updateLessonInfo(Integer week, String name, String content, LocalDate start) {
+    public void updateLessonInfo(Integer week, String video, LocalDate start) {
         this.week = week;
-        this.name = name;
-        this.content = content;
+        this.video = video;
         this.start = start;
     }
 
