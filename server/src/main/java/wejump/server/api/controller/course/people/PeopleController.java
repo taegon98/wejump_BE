@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import wejump.server.api.dto.course.people.PeopleRequestDTO;
 import wejump.server.api.dto.course.people.PeopleResponseDTO;
 import wejump.server.domain.course.Course;
+import wejump.server.domain.member.Member;
 import wejump.server.service.course.people.PeopleService;
 import wejump.server.service.course.course.CourseService;
+import wejump.server.service.member.MemberService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class PeopleController {
 
     private final CourseService courseService;
+    private final MemberService memberService;
     private final PeopleService peopleService;
 
     // read all attendance and assignment
@@ -38,6 +41,7 @@ public class PeopleController {
                                            @PathVariable Long memberId){
 
         Course course = courseService.getCourseById(courseId);
+        Member member = memberService.getMemberById(memberId);
 
         return peopleService.getPeopleById(courseId, memberId);
     }
