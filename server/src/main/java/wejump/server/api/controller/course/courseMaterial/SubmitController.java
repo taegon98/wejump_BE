@@ -13,12 +13,14 @@ import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.assignment.Submit;
 import wejump.server.domain.assignment.SubmitId;
 import wejump.server.domain.member.Member;
+import wejump.server.repository.course.assignment.SubmitRepository;
 import wejump.server.repository.member.MemberRepository;
 import wejump.server.service.course.assignment.AssignmentService;
 import wejump.server.service.course.assignment.SubmitService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -32,6 +34,8 @@ public class SubmitController {
     private final SubmitService submitService;
     private final AssignmentService assignmentService;
     private final MemberRepository memberRepository;
+
+    private final SubmitRepository submitRepository;
 
     @PostMapping("/{memberId}")
     public ResponseEntity<Object> createSubmit(
@@ -114,17 +118,20 @@ public class SubmitController {
         }
     }
 
-
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<?> deleteSubmit(@PathVariable Long assignmentId,
-                                          @PathVariable Long memberId) {
-        try {
-            SubmitId submitId = new SubmitId(assignmentId, memberId);
+    public void deleteFile(@PathVariable Long assignmentId, @PathVariable Long memberId) {
 
-            submitService.deleteSubmit(submitId);
-            return new ResponseEntity<>("삭제되었습니다.", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        submitRepository.deleteByAssignmentIdAndMemberId(assignmentId, memberId);
+    }
+
+    private boolean deleteFile(String filePath) throws IOException {
+        // 파일 삭제 로직
+        try {
+            Path path = Paths.get(filePath);
+            return Files.deleteIfExists(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 }
