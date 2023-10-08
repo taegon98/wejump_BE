@@ -2,6 +2,7 @@ package wejump.server.api.controller.course.courseMaterial;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import wejump.server.service.course.assignment.SubmitService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,20 +83,35 @@ public class SubmitController {
     @GetMapping("/{memberId}/download")
     public ResponseEntity<Resource> downloadFile(@PathVariable Long assignmentId,
                                                  @PathVariable Long memberId) throws MalformedURLException {
-        // 파일 경로를 얻기
+
         Submit submit = submitService.getSubmitById(assignmentId, memberId);
 
         if (submit == null){
             throw new IllegalArgumentException("Not Found, submit");
         }
+        
         String filePath = submit.getFilePath();
+        String fileName = extractFileName(filePath);
 
-        // Resource 객체 생성
-        Resource resource = submitService.loadFileAsResource(filePath);
+        Resource resource = new UrlResource("file:" + filePath);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 파일 이름 추출
+    private String extractFileName(String filePath) {
+        int lastIndex = filePath.lastIndexOf("/");
+        if (lastIndex != -1) {
+            return filePath.substring(lastIndex + 1);
+        } else {
+            return filePath;
+        }
     }
 
 

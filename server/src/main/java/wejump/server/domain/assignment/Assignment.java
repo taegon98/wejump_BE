@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.api.dto.course.assignment.AssignmentResponseDTO;
 import wejump.server.domain.lesson.Lesson;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -45,25 +46,12 @@ public class Assignment {
     private List<Evaluate> evaluates;
 
 
-    public AssignmentResponseDTO build(Assignment assignment) {
-
-        return AssignmentResponseDTO.builder()
-                .title(assignment.getTitle())
-                .description(assignment.getDescription())
-                .startDate(assignment.getStartDate())
-                .dueDate(assignment.getDueDate())
-                .build();
-    }
-
-
     /*
      ****************************************비지니스 로직****************************************
      */
 
     //dto -> model로 변환 기능 포함
-
     public void updateAssignment(String title, String description, LocalDate end) {
-
             this.title = title;
             this.description = description;
             this.end = end;

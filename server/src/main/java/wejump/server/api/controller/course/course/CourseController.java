@@ -9,8 +9,6 @@ import wejump.server.api.dto.course.course.CourseInfoResponseDTO;
 import wejump.server.api.dto.course.course.CourseRequestDTO;
 import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
-import wejump.server.repository.LessonRepository;
-import wejump.server.service.CourseService;
 import wejump.server.service.course.course.CourseService;
 import javax.validation.Valid;
 import java.util.List;
@@ -23,8 +21,6 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    private final LessonRepository lessonRepository;
-
     @PostMapping
     public ResponseEntity<Object> createCourse(@RequestBody @Valid CourseRequestDTO courseRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -35,16 +31,10 @@ public class CourseController {
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-
-        Course createdCourse = courseService.createCourse(courseRequestDTO);
+        CourseResponseDTO createdCourse = courseService.createCourse(courseRequestDTO);
         return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{courseId}")
-    public CourseResponseDTO getCourseById(@PathVariable Long courseId) {
-        //레슨 전체 찾기
-        return courseService.getCourseById(courseId);
-    }
 
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> updateCourse(@PathVariable Long courseId, @RequestBody @Valid CourseRequestDTO courseRequestDTO, BindingResult bindingResult) {
@@ -57,7 +47,7 @@ public class CourseController {
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-        Course updatedCourse = courseService.updateCourse(courseId, courseRequestDTO);
+        CourseResponseDTO updatedCourse = courseService.updateCourse(courseId, courseRequestDTO);
         return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
     }
 
@@ -82,7 +72,4 @@ public class CourseController {
         Course course = courseService.getCourseById(courseId);
         return courseService.createCourseInfoResponseDTO(course);
     }
-
-
-
 }

@@ -17,5 +17,4 @@ spring:
       max-request-size: 20MB
 file:
   upload:
-    path: /var/photos
-
+    path: C:\Users\82105\OneDrive\바탕 화면\test

@@ -2,7 +2,10 @@ package wejump.server.api.dto.course.course;
 
 import lombok.Builder;
 import lombok.Getter;
+import wejump.server.domain.course.Course;
 import wejump.server.domain.lesson.Lesson;
+import wejump.server.domain.member.Member;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +14,12 @@ import java.util.List;
 @Builder
 public class CourseResponseDTO {
     private String name;
-    private Integer quota;
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;
     private String summary;
     private String reference;
+    private String instructor;
     private String image;
+
 }

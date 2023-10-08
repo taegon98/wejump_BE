@@ -8,7 +8,9 @@ import wejump.server.api.dto.course.course.CourseInfoResponseDTO;
 import wejump.server.api.dto.course.course.CourseRequestDTO;
 import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
+import wejump.server.domain.member.Member;
 import wejump.server.repository.course.course.CourseRepository;
+import wejump.server.repository.member.MemberRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,24 +22,39 @@ import java.util.stream.Collectors;
 public class CourseService {
     private final CourseRepository courseRepository;
 
+    private final MemberRepository memberRepository;
+
     @Transactional
-    public Course createCourse(CourseRequestDTO courseRequestDTO) {
+    public CourseResponseDTO createCourse(CourseRequestDTO courseRequestDTO) {
+
+        Member member = memberRepository.findByName(courseRequestDTO.getInstructor()).get();
 
         Course course = Course.builder()
                 .name(courseRequestDTO.getName())
                 .start_date(courseRequestDTO.getStart_date())
-                .end_date(courseRequestDTO.getStart_date())
+                .end_date(courseRequestDTO.getEnd_date())
                 .description(courseRequestDTO.getDescription())
                 .summary(courseRequestDTO.getSummary())
                 .reference(courseRequestDTO.getReference())
-                .image(courseRequestDTO.getImage())
+                .instructor(member)
                 .build();
 
         // 필수 필드 확인
         validateCourseFields(course);
+        courseRepository.save(course);
+
+        CourseResponseDTO courseResponseDTO = CourseResponseDTO.builder()
+                .name(course.getName())
+                .startDate(course.getStart_date())
+                .endDate(course.getEnd_date())
+                .description(course.getDescription())
+                .summary(course.getSummary())
+                .reference(course.getReference())
+                .instructor(member.getName())
+                .build();
 
         // 코스 저장
-        return courseRepository.save(course);
+        return courseResponseDTO;
     }
 
     @Transactional(readOnly = true)
@@ -58,10 +75,12 @@ public class CourseService {
 
 
     @Transactional
-    public Course updateCourse(Long courseId, CourseRequestDTO courseRequestDTO) {
+    public CourseResponseDTO updateCourse(Long courseId, CourseRequestDTO courseRequestDTO) {
         // courseId로 기존 코스를 조회
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
+
+        Member member = memberRepository.findByName(courseRequestDTO.getInstructor()).get();
 
         // 기존 코스 정보 업데이트
         course.updateCourseInfo(courseRequestDTO.getName(),
@@ -70,10 +89,22 @@ public class CourseService {
                 courseRequestDTO.getDescription(),
                 courseRequestDTO.getSummary(),
                 courseRequestDTO.getReference(),
-                courseRequestDTO.getImage());
+                member);
 
-        // 코스 업데이트
-        return courseRepository.save(course);
+        courseRepository.save(course);
+
+        CourseResponseDTO courseResponseDTO = CourseResponseDTO.builder()
+                .name(course.getName())
+                .startDate(course.getStart_date())
+                .endDate(course.getEnd_date())
+                .description(course.getDescription())
+                .summary(course.getSummary())
+                .reference(course.getReference())
+                .instructor(member.getName())
+                .build();
+
+        // 코스 저장
+        return courseResponseDTO;
     }
 
     @Transactional
