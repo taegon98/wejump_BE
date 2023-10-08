@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import wejump.server.domain.assignment.Assignment;
 import wejump.server.domain.course.Course;
 
 import javax.persistence.*;
@@ -47,8 +48,8 @@ public class Lesson {
     @JoinColumn(name = "course_id")
     private Course course;
 
-//    @OneToOne(mappedBy = "lesson")
-//    private Assignment assignment;
+    @OneToOne(mappedBy = "lesson")
+    private Assignment assignment;
 
     public void updateLessonInfo(Integer week, String name, String content, LocalDate start) {
         this.week = week;

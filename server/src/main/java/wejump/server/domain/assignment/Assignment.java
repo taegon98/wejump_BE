@@ -43,6 +43,9 @@ public class Assignment {
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Submit> submits; // Assignment와 Submit 엔티티 간의 관계 설정
 
+    @OneToOne
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
 
 
     public AssignmentResponseDTO build(Assignment assignment) {
@@ -54,11 +57,6 @@ public class Assignment {
                 .dueDate(assignment.getDueDate())
                 .build();
     }
-
-
-      @OneToOne
-      @JoinColumn(name = "lesson_id")
-      private Lesson lesson;
 
 
     /*

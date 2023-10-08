@@ -9,6 +9,7 @@ import wejump.server.api.dto.course.CourseRequestDTO;
 import wejump.server.api.dto.course.CourseResponseDTO;
 import wejump.server.api.dto.member.MemberResponseDTO;
 import wejump.server.domain.course.Course;
+import wejump.server.repository.LessonRepository;
 import wejump.server.service.CourseService;
 import javax.validation.Valid;
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public class CourseController {
 
     private final CourseService courseService;
+
+    private final LessonRepository lessonRepository;
 
     @PostMapping
     public ResponseEntity<Object> createCourse(@RequestBody @Valid CourseRequestDTO courseRequestDTO, BindingResult bindingResult) {
@@ -38,6 +41,7 @@ public class CourseController {
 
     @GetMapping("/{courseId}")
     public CourseResponseDTO getCourseById(@PathVariable Long courseId) {
+        //레슨 전체 찾기
         return courseService.getCourseById(courseId);
     }
 

@@ -2,8 +2,10 @@ package wejump.server.api.dto.course;
 
 import lombok.Builder;
 import lombok.Getter;
-
+import wejump.server.domain.lesson.Lesson;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
