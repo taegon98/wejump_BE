@@ -37,4 +37,13 @@ public class EvaluateService {
 
         return evaluateRepository.saveAll(evaluates);
     }
+
+    @Transactional
+    public void updateEvaluate(EvaluateId evaluateId, String evaluation){
+        Evaluate existingEvaluate = evaluateRepository.findById(evaluateId)
+                .orElseThrow(() -> new IllegalArgumentException("cannot find evalaute"));
+
+        existingEvaluate.updateEvaluate(evaluation);
+        evaluateRepository.save(existingEvaluate);
+    }
 }

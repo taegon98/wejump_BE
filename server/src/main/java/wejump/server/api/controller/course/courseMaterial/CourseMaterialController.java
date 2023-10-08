@@ -21,7 +21,6 @@ import wejump.server.repository.course.course.EnrollRepository;
 import wejump.server.service.course.assignment.AssignmentService;
 import wejump.server.service.course.assignment.EvaluateService;
 import wejump.server.service.course.course.CourseService;
-import wejump.server.service.course.course.EnrollService;
 import wejump.server.service.course.lesson.AttendService;
 import wejump.server.service.course.lesson.LessonService;
 

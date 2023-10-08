@@ -6,6 +6,7 @@ import wejump.server.domain.member.Member;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @DynamicUpdate
 @Entity
@@ -38,7 +39,7 @@ public class Attend implements Serializable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public void updateStatusInfo(String attendance) {
+    public void updateAttend(String attendance) {
         this.attendance = attendance;
     }
 }

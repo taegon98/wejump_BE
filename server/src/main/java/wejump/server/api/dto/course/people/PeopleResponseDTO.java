@@ -4,12 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Builder
 @Setter
-public class StatusResponseDTO {
+public class PeopleResponseDTO {
     private Integer week;
-    private List<StatusDTO> statusByWeek;
+    private LocalDate date;
+    private List<StatusDTO> statusDTOS;
 }

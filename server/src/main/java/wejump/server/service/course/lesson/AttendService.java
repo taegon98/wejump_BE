@@ -38,4 +38,13 @@ public class AttendService {
         return attendRepository.saveAll(attends);
     }
 
+    @Transactional
+    public void updateAttend(AttendId attendId, String attendance){
+        Attend existingAttend = attendRepository.findById(attendId)
+                .orElseThrow(() -> new IllegalArgumentException("cannot find attend"));
+
+        existingAttend.updateAttend(attendance);
+        attendRepository.save(existingAttend);
+    }
+
 }

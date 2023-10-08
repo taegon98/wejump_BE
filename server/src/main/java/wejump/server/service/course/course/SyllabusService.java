@@ -9,9 +9,6 @@ import wejump.server.domain.course.Course;
 import wejump.server.domain.course.Syllabus;
 import wejump.server.repository.course.course.SyllabusRepository;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

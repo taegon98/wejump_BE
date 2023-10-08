@@ -40,4 +40,7 @@ public class Evaluate implements Serializable {
     @MapsId("memberId")
     @JoinColumn(name = "member_id")
     private Member member;
+
+
+    public void updateEvaluate(String evaluation){this.evaluation = evaluation;}
 }

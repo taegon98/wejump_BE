@@ -1,94 +1,59 @@
-//package wejump.server.api.controller.course;
+package wejump.server.api.controller.course.people;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import wejump.server.api.dto.course.people.PeopleRequestDTO;
+import wejump.server.api.dto.course.people.PeopleResponseDTO;
+import wejump.server.domain.course.Course;
+import wejump.server.service.course.people.PeopleService;
+import wejump.server.service.course.course.CourseService;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("courses/people")
+@RequiredArgsConstructor
+public class PeopleController {
+
+    private final CourseService courseService;
+    private final PeopleService peopleService;
+
+    // read all attendance and assignment
+    @GetMapping("/{courseId}")
+    public List<PeopleResponseDTO> getAllPeopleById(@PathVariable Long courseId){
+
+        Course course = courseService.getCourseById(courseId);
+
+        return peopleService.getAllPeopleById(courseId);
+    }
+
+//    @GetMapping("/{courseId}/{memberId}")
+//    public PeopleResponseDTO getPeopleById(@PathVariable Long courseId,
+//                                           @PathVariable Long memberId){
 //
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.web.bind.annotation.*;
-//import wejump.server.api.dto.course.people.StatusResponseDTO;
-//import wejump.server.service.PeopleService;
+//        Course course = courseService.getCourseById(courseId);
 //
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("course/{courseId}/status")
-//@RequiredArgsConstructor
-//public class PeopleController {
-//    private final PeopleService peopleService;
-//
-//    // create attendance
-////    @PostMapping
-////    public ResponseEntity<Object> createStatus(@PathVariable Long courseId,
-////                                               @RequestBody @Valid StatusDTO statusDTO,
-////                                               BindingResult bindingResult){
-////        if (bindingResult.hasErrors()){
-////            List<String> errorMessages = bindingResult.getFieldErrors()
-////                    .stream()
-////                    .map(FieldError::getDefaultMessage)
-////                    .collect(Collectors.toList());
-////            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
-////        }
-////
-////        // 날짜 형식: "2023-09-13"
-////        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-////        try {
-////            LocalDate start = LocalDate.parse(statusDTO.getDate(), formatter);
-////            List<Attend> createdAttends = attendService.createStatus(courseId, start, statusDTO.getAttendance(), statusDTO.getAssignment());
-////            return new ResponseEntity<>("create success", HttpStatus.CREATED);
-////
-////        }
-////        catch (DateTimeParseException ex) {
-////            return new ResponseEntity<>("date format is not correct", HttpStatus.BAD_REQUEST);
-////        }
-////        catch (AttendService.NotFoundException notFoundException) {
-////            return new ResponseEntity<>("cannot find lesson", HttpStatus.BAD_REQUEST);
-////        }
-////
-////    }
-//
-//    // read all attendance and assignment
-//    @GetMapping
-//    public List<StatusResponseDTO> getStatusById(@PathVariable Long courseId){
-//        return peopleService.getPeopleById(courseId);
+//        return peopleService.getPeopleById(courseId, memberId);
 //    }
-////
-////    // update Status
-////    @PutMapping
-////    public ResponseEntity<Object> updateStatus(@RequestBody @Valid List<StatusRequestDTO> statusRequestDTOS,
-////                                               BindingResult bindingResult){
-////        if (bindingResult.hasErrors()){
-////            List<String> errorMessages = bindingResult.getFieldErrors()
-////                    .stream()
-////                    .map(FieldError::getDefaultMessage)
-////                    .collect(Collectors.toList());
-////            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
-////        }
-////
-////        attendService.updateStatus(statusRequestDTOS);
-////        return new ResponseEntity<>("update success", HttpStatus.OK);
-////    }
-////
-////    // delete Status
-////    @DeleteMapping
-////    public ResponseEntity<Object> deleteStatus(@PathVariable Long courseId,
-////                                               @RequestBody @Valid StatusDTO statusDTO,
-////                                               BindingResult bindingResult){
-////        if (bindingResult.hasErrors()){
-////            List<String> errorMessages = bindingResult.getFieldErrors()
-////                    .stream()
-////                    .map(FieldError::getDefaultMessage)
-////                    .collect(Collectors.toList());
-////            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
-////        }
-////
-////        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-////
-////        try {
-////            LocalDate start = LocalDate.parse(statusDTO.getDate(), formatter);
-////            attendService.deleteStatus(courseId, start);
-////            return new ResponseEntity<>("delete success", HttpStatus.OK);
-////
-////        }
-////        catch (DateTimeParseException ex) {
-////            return new ResponseEntity<>("date format is not correct", HttpStatus.BAD_REQUEST);
-////        }
-////    }
-//
-//}
+
+    @PutMapping
+    public ResponseEntity<Object> updatePeople(@RequestBody @Valid List<PeopleRequestDTO> peopleRequestDTOS,
+                                               BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            List<String> errorMessages = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
+        }
+
+        peopleService.updatePeople(peopleRequestDTOS);
+        return new ResponseEntity<>("update people success", HttpStatus.OK);
+    }
+}

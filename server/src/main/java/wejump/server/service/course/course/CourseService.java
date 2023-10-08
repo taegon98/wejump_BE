@@ -8,11 +8,7 @@ import wejump.server.api.dto.course.course.CourseInfoResponseDTO;
 import wejump.server.api.dto.course.course.CourseRequestDTO;
 import wejump.server.api.dto.course.course.CourseResponseDTO;
 import wejump.server.domain.course.Course;
-import wejump.server.domain.course.EnrollCourse;
-import wejump.server.domain.member.Member;
 import wejump.server.repository.course.course.CourseRepository;
-import wejump.server.repository.course.course.EnrollRepository;
-import wejump.server.repository.member.MemberRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
