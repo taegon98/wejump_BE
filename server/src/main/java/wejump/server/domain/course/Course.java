@@ -73,7 +73,8 @@ public class Course {
 
     // 비즈니스 로직을 통해 필드 값 변경
     
-    public void updateCourseInfo(String name, LocalDate start_date, LocalDate end_date, String description, String summary, String reference, String image) {
+    public void updateCourseInfo(String name, LocalDate start_date, LocalDate end_date, String description, String summary,
+                                 String reference, Member instructor) {
 
         this.name = name;
         this.start_date = start_date;
@@ -81,7 +82,7 @@ public class Course {
         this.description = description;
         this.summary = summary;
         this.reference = reference;
-        this.image = image;
+        this.instructor = instructor;
     }
 
     public CourseResponseDTO build(Course course) {

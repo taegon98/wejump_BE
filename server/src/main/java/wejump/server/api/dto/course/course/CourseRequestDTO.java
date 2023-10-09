@@ -25,7 +25,5 @@ public class CourseRequestDTO {
 
     private String reference;
 
-    private String image;
-
-
+    private String instructor;
 }

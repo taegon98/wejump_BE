@@ -81,9 +81,7 @@ public class SubmitService {
 
     public Submit getSubmitById(Long assignmentId, Long memberId){
 
-        SubmitId submitId = new SubmitId(assignmentId, memberId);
-
-        return submitRepository.findById(submitId).orElse(null);
+        return submitRepository.findByAssignmentIdAndMemberId(assignmentId, memberId).get();
     }
 
 

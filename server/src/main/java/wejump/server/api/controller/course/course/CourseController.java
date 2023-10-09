@@ -31,8 +31,7 @@ public class CourseController {
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-
-        Course createdCourse = courseService.createCourse(courseRequestDTO);
+        CourseResponseDTO createdCourse = courseService.createCourse(courseRequestDTO);
         return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
     }
 
@@ -48,7 +47,7 @@ public class CourseController {
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-        Course updatedCourse = courseService.updateCourse(courseId, courseRequestDTO);
+        CourseResponseDTO updatedCourse = courseService.updateCourse(courseId, courseRequestDTO);
         return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
     }
 
@@ -73,7 +72,4 @@ public class CourseController {
         Course course = courseService.getCourseById(courseId);
         return courseService.createCourseInfoResponseDTO(course);
     }
-
-
-
 }

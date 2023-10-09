@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wejump.server.domain.member.Member;
 import wejump.server.repository.member.MemberRepository;
-
 import java.util.Map;
 
 @RestController
