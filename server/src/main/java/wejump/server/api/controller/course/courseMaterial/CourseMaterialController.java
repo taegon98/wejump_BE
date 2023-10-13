@@ -90,12 +90,14 @@ public class CourseMaterialController {
                     AssignmentResponseDTO assignmentResponseDTO = null;
                     if (assignment != null){
                         assignmentResponseDTO = AssignmentResponseDTO.builder()
+                                .assignmentId(assignment.getId())
                                 .title(assignment.getTitle())
                                 .description(assignment.getDescription())
                                 .end((assignment.getEnd()))
                                 .build();
                     }
                     return CourseMaterialResponseDTO.builder()
+                            .lessonId(lesson.getId())
                             .week(lesson.getWeek())
                             .start(lesson.getStart())
                             .video(lesson.getVideo())
@@ -137,6 +139,39 @@ public class CourseMaterialController {
         lessonService.deleteLesson(lesson);
         return new ResponseEntity<>("delete success!", HttpStatus.OK);
     }
+
+    // create Assignment
+    @PostMapping("/assignment/{lessonId}")
+    public ResponseEntity<Object> createAssignment(@PathVariable Long lessonId,
+                                                   @RequestBody @Valid AssignmentRequestDTO assignmentRequestDTO,
+                                                   BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            List<String> errorMessages = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
+        }
+
+        Lesson lesson = lessonService.getLessonById(lessonId);
+
+        // 해당 course 찾기
+        Course course = lesson.getCourse();
+
+        // 해당 course를 수강하는 학생 찾기
+        List<EnrollCourse> enrollCourses = enrollRepository.findAllByCourseIdAndAcceptedTrue(course.getId());
+        if (enrollCourses.isEmpty()) {
+            throw new IllegalArgumentException("No students enrolled in this course");
+        }
+
+        if (assignmentRequestDTO != null) {
+            Assignment assignment = assignmentService.createAssignment(lesson, assignmentRequestDTO);
+            List<Evaluate> evaluates = evaluateService.createEvaluate(assignment, enrollCourses);
+        }
+
+        return new ResponseEntity<>("create success!", HttpStatus.CREATED);
+    }
+
 
     // update Assignment
     @PutMapping("/assignment/{assignmentId}")
