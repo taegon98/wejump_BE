@@ -10,5 +10,8 @@ import java.util.List;
 public class MyPageResponseDTO {
 
     private List<CourseResponseDTO> courses;
+
+
+
     private List<CourseResponseDTO> myCourses;
 }

@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/courses")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CourseMaterialController {
 
     private final CourseService courseService;

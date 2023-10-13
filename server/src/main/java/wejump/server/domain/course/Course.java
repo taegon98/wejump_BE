@@ -88,6 +88,7 @@ public class Course {
     public CourseResponseDTO build(Course course) {
 
         return CourseResponseDTO.builder()
+                .id(course.getId())
                 .name(course.getName())
                 .startDate(course.getStart_date())
                 .endDate(course.getEnd_date())
