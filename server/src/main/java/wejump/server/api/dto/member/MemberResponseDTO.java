@@ -1,21 +1,16 @@
 package wejump.server.api.dto.member;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import wejump.server.domain.member.Member;
 
 @Getter
+@AllArgsConstructor
 public class MemberResponseDTO {
     private Long id;
     private String name;
     private String email;
-    private String nickname;
-    private String image;
-
-    public MemberResponseDTO(Member member) {
-        this.id = member.getId();
-        this.name = member.getName();
-        this.email = member.getEmail();
-        this.nickname = member.getNickname();
-        this.image = member.getImage();
-    }
+    private String role;
 }

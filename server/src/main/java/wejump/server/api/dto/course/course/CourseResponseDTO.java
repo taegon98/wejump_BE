@@ -13,6 +13,8 @@ import java.util.List;
 @Getter
 @Builder
 public class CourseResponseDTO {
+
+    private Long id;
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;

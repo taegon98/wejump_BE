@@ -19,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/courses/enroll/{courseId}")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EnrollController {
 
     private final CourseService courseService;

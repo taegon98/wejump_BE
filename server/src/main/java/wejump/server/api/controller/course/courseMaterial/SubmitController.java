@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/courses/submits/{assignmentId}")
+@CrossOrigin
 public class SubmitController {
 
     private final SubmitService submitService;

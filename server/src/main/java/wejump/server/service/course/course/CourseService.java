@@ -27,7 +27,7 @@ public class CourseService {
     @Transactional
     public CourseResponseDTO createCourse(CourseRequestDTO courseRequestDTO) {
 
-        Member member = memberRepository.findByName(courseRequestDTO.getInstructor()).get();
+        Member member = memberRepository.findByEmail(courseRequestDTO.getInstructor()).get();
 
         Course course = Course.builder()
                 .name(courseRequestDTO.getName())

@@ -1,6 +1,7 @@
 package wejump.server.domain.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @DynamicUpdate
 @Entity
 @Getter
@@ -37,6 +39,9 @@ public class Member {
     @Column(name = "profile_image", nullable = true)
     private String image;
 
+    @Column(name = "role", nullable = false)
+    private String role;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnrollCourse> enrolledCourses = new ArrayList<>();
 
@@ -50,12 +55,13 @@ public class Member {
     private List<Course> instructedCourses = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String name, String email, String nickname, String image) {
+    public Member(Long id, String name, String email, String nickname, String image, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.nickname = nickname;
         this.image = image;
+        this.role = role;
     }
 
     public Member update(String name, String email) {

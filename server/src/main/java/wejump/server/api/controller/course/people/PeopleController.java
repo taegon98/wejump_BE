@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("courses/people")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PeopleController {
 
     private final CourseService courseService;

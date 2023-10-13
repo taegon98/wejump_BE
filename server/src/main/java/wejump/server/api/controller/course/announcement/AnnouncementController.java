@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/courses/{courseId}/announcements") //코스별 notice, /courses/{courseId}/notice
+@CrossOrigin
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;

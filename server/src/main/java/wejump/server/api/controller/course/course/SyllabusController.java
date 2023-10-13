@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("courses/syllabus")
 @RequiredArgsConstructor
+@CrossOrigin
 public class SyllabusController {
     private final CourseService courseService;
     private final SyllabusService syllabusService;
