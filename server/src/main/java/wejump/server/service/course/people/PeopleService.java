@@ -116,84 +116,85 @@ public class PeopleService {
         return peopleResponseDTOS;
     }
 
-//
-//    public PeopleResponseDTO getPeopleById(Long courseId, Long memberId){
-//
-//        List<Lesson> lessons = lessonRepository.findAllByCourseIdOrderByStartAsc(courseId);
-//
-//        for (Lesson lesson : lessons) {
-//            List<Attend> attends = attendRepository.findAllByLessonIdOrderByName(lesson.getId());
-//
-//            Assignment assignment = lesson.getAssignment();
-//            List<Evaluate> evaluates;
-//            if (assignment != null) {
-//                evaluates = evaluateRepository.findAllByAssignmentIdOrderByName(assignment.getId());
-//            } else {
-//                evaluates = Collections.emptyList();
-//            }
-//
-//            if (!attends.isEmpty() && !evaluates.isEmpty()){
-//                List<StatusDTO> statusDTOS = IntStream.range(0, attends.size())
-//                        .mapToObj(i -> {
-//                            Attend attend = attends.get(i);
-//                            Evaluate evaluate = evaluates.get(i);
-//
-//                            return StatusDTO.builder()
-//                                    .name(attend.getName())
-//                                    .attendance(attend.getAttendance())
-//                                    .evaluation(evaluate.getEvaluation())
-//                                    .memberId(attend.getMember().getId())
-//                                    .lessonId(lesson.getId())
-//                                    .assignmentId(assignment.getId())
-//                                    .build();
-//                        })
-//                        .collect(Collectors.toList());
-//
-//                PeopleResponseDTO peopleResponseDTO = PeopleResponseDTO.builder()
-//                        .week(lesson.getWeek())
-//                        .date(lesson.getStart())
-//                        .statusDTOS(statusDTOS)
-//                        .build();
-//
-//                peopleResponseDTOS.add(peopleResponseDTO);
-//            } else if (attends.isEmpty() && !evaluates.isEmpty()) {
-//                List<StatusDTO> statusDTOS = evaluates.stream()
-//                        .map(evaluate -> StatusDTO.builder()
-//                                .name(evaluate.getName())
-//                                .evaluation(evaluate.getEvaluation())
-//                                .memberId(evaluate.getMember().getId())
-//                                .assignmentId(assignment.getId())
-//                                .build())
-//                        .collect(Collectors.toList());
-//
-//                PeopleResponseDTO peopleResponseDTO = PeopleResponseDTO.builder()
-//                        .week(lesson.getWeek())
-//                        .date(lesson.getStart())
-//                        .statusDTOS(statusDTOS)
-//                        .build();
-//
-//                peopleResponseDTOS.add(peopleResponseDTO);
-//            } else if (!attends.isEmpty() && evaluates.isEmpty()) {
-//                List<StatusDTO> statusDTOS = attends.stream()
-//                        .map(attend -> StatusDTO.builder()
-//                                .name(attend.getName())
-//                                .attendance(attend.getAttendance())
-//                                .memberId(attend.getMember().getId())
-//                                .lessonId(lesson.getId())
-//                                .build())
-//                        .collect(Collectors.toList());
-//
-//                PeopleResponseDTO peopleResponseDTO = PeopleResponseDTO.builder()
-//                        .week(lesson.getWeek())
-//                        .date(lesson.getStart())
-//                        .statusDTOS(statusDTOS)
-//                        .build();
-//
-//                peopleResponseDTOS.add(peopleResponseDTO);
-//            }
-//        }
-//        return peopleResponseDTOS;
-//    }
+
+    public List<PeopleResponseDTO> getPeopleById(Long courseId, Long memberId){
+
+        List<Lesson> lessons = lessonRepository.findAllByCourseIdOrderByStartAsc(courseId);
+        List<PeopleResponseDTO> peopleResponseDTOS = new ArrayList<>();
+
+        for (Lesson lesson : lessons) {
+            List<Attend> attends = attendRepository.findAllByLessonIdAndMemberId(lesson.getId(), memberId);
+
+            Assignment assignment = lesson.getAssignment();
+            List<Evaluate> evaluates;
+            if (assignment != null) {
+                evaluates = evaluateRepository.findAllByAssignmentIdAndMemberId(assignment.getId(), memberId);
+            } else {
+                evaluates = Collections.emptyList();
+            }
+
+            if (!attends.isEmpty() && !evaluates.isEmpty()){
+                List<StatusDTO> statusDTOS = IntStream.range(0, attends.size())
+                        .mapToObj(i -> {
+                            Attend attend = attends.get(i);
+                            Evaluate evaluate = evaluates.get(i);
+
+                            return StatusDTO.builder()
+                                    .name(attend.getName())
+                                    .attendance(attend.getAttendance())
+                                    .evaluation(evaluate.getEvaluation())
+                                    .memberId(attend.getMember().getId())
+                                    .lessonId(lesson.getId())
+                                    .assignmentId(assignment.getId())
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
+
+                PeopleResponseDTO peopleResponseDTO = PeopleResponseDTO.builder()
+                        .week(lesson.getWeek())
+                        .date(lesson.getStart())
+                        .statusDTOS(statusDTOS)
+                        .build();
+                peopleResponseDTOS.add(peopleResponseDTO);
+
+            } else if (attends.isEmpty() && !evaluates.isEmpty()) {
+                List<StatusDTO> statusDTOS = evaluates.stream()
+                        .map(evaluate -> StatusDTO.builder()
+                                .name(evaluate.getName())
+                                .evaluation(evaluate.getEvaluation())
+                                .memberId(evaluate.getMember().getId())
+                                .assignmentId(assignment.getId())
+                                .build())
+                        .collect(Collectors.toList());
+
+                PeopleResponseDTO peopleResponseDTO = PeopleResponseDTO.builder()
+                        .week(lesson.getWeek())
+                        .date(lesson.getStart())
+                        .statusDTOS(statusDTOS)
+                        .build();
+
+                peopleResponseDTOS.add(peopleResponseDTO);
+            } else if (!attends.isEmpty() && evaluates.isEmpty()) {
+                List<StatusDTO> statusDTOS = attends.stream()
+                        .map(attend -> StatusDTO.builder()
+                                .name(attend.getName())
+                                .attendance(attend.getAttendance())
+                                .memberId(attend.getMember().getId())
+                                .lessonId(lesson.getId())
+                                .build())
+                        .collect(Collectors.toList());
+
+                PeopleResponseDTO peopleResponseDTO = PeopleResponseDTO.builder()
+                        .week(lesson.getWeek())
+                        .date(lesson.getStart())
+                        .statusDTOS(statusDTOS)
+                        .build();
+
+                peopleResponseDTOS.add(peopleResponseDTO);
+            }
+        }
+        return peopleResponseDTOS;
+    }
 
 
     @Transactional
