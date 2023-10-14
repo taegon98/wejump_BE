@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Builder
 public class CourseMaterialResponseDTO {
 
+    private Long lessonId;
+
     private Integer week;
 
     private LocalDate start;

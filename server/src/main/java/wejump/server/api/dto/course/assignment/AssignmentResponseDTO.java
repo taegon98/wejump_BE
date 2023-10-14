@@ -8,6 +8,8 @@ import java.time.LocalDate;
 @Builder
 public class AssignmentResponseDTO {
 
+    private Long assignmentId;
+
     private String title;
 
     private String description;
