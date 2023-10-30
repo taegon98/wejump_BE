@@ -14,7 +14,6 @@ import wejump.server.domain.member.Member;
 import wejump.server.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.Map;
 
 @RestController
@@ -28,6 +27,8 @@ public class OAuthController {
 
     private static final String DEFAULT_ROLE = "Student";
 
+    private static final String FRONTEND_REDIRECT_URL = "http://localhost:5173/weJump_Fe/"; // 프론트엔드 리다이렉션 URI
+
     @GetMapping("/loginInfo")
     public ResponseEntity<MemberResponseDTO> oauthLoginInfo(Authentication authentication) {
         try {
@@ -35,11 +36,12 @@ public class OAuthController {
             Map<String, Object> attributes = oAuth2User.getAttributes();
             String email = attributes.get("email").toString();
 
-            // 검색된 회원 정보 저장
             Member member;
+
             if (memberRepository.findByEmail(email).isPresent()) {
                 member = memberRepository.findByEmail(email).get();
             } else {
+                // 새로운 회원 생성
                 member = Member.builder()
                         .name(attributes.get("name").toString())
                         .email(email)
@@ -48,12 +50,14 @@ public class OAuthController {
                 memberRepository.save(member);
             }
 
-            // 리다이렉션 응답 생성
+            // 멤버 정보를 MemberResponseDTO로 매핑
+            MemberResponseDTO memberDTO = new MemberResponseDTO(
+                    member.getId(), member.getName(), member.getEmail(), member.getRole());
+
+            // 프론트엔드 리다이렉션 URI로 리디렉트
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "http://localhost:5173/weJump_Fe/"); // 외부 URL로 절대 경로로 설정
-
-            return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER); // 303 See Other 리다이렉션 상태 코드
-
+            headers.add("Location", FRONTEND_REDIRECT_URL);
+            return new ResponseEntity<>(memberDTO, headers, HttpStatus.SEE_OTHER); // 303 See Other 리다이렉션 상태 코드
         } catch (Exception e) {
             log.error("OAuth login info error: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
