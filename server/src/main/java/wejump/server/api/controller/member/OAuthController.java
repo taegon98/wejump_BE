@@ -16,7 +16,7 @@ import wejump.server.domain.member.Member;
 import wejump.server.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 import java.util.Map;
@@ -29,10 +29,8 @@ import java.util.Map;
 public class OAuthController {
 
     private final MemberRepository memberRepository;
-
     private static final String DEFAULT_ROLE = "Student";
-
-    private static final String FRONTEND_REDIRECT_URL = "http://localhost:5173/weJump_Fe/"; // 프론트엔드 리다이렉션 URI
+    private static final String FRONTEND_REDIRECT_URL = "http://localhost:5173/weJump_Fe/";
 
     @GetMapping("/loginInfo")
     public ResponseEntity<MemberResponseDTO> oauthLoginInfo(
@@ -49,7 +47,6 @@ public class OAuthController {
             if (memberRepository.findByEmail(email).isPresent()) {
                 member = memberRepository.findByEmail(email).get();
             } else {
-                // Create a new member
                 member = Member.builder()
                         .name(attributes.get("name").toString())
                         .email(email)
@@ -58,21 +55,27 @@ public class OAuthController {
                 memberRepository.save(member);
             }
 
-            // Member information to MemberResponseDTO
             MemberResponseDTO memberDTO = new MemberResponseDTO(
                     member.getId(), member.getName(), member.getEmail(), member.getRole());
 
-            // MemberResponseDTO to JSON and then encode as Base64
             ObjectMapper objectMapper = new ObjectMapper();
             String memberDTOJson = objectMapper.writeValueAsString(memberDTO);
             String base64EncodedMemberDTO = Base64.getEncoder().encodeToString(memberDTOJson.getBytes());
 
-            // Store the Base64 encoded data in the cookie
             CookieGenerator cookieGenerator = new CookieGenerator();
-            cookieGenerator.setCookieName("MEMBERDTO"); // Set your desired cookie name
-            cookieGenerator.addCookie(response, base64EncodedMemberDTO);
+            cookieGenerator.setCookieName("MEMBERDTO");
+            cookieGenerator.setCookiePath("/");
+            cookieGenerator.setCookieMaxAge(60 * 60 * 24); // 1 day
+            cookieGenerator.setCookieSecure(false);
+            cookieGenerator.setCookieHttpOnly(false);
 
-            // Frontend redirection URI
+            Cookie cookie = new Cookie("MEMBERDTO", base64EncodedMemberDTO);
+            cookie.setPath("/");
+            cookie.setMaxAge(60 * 60 * 24);
+            cookie.setSecure(false);
+            cookie.setHttpOnly(false);
+            response.addCookie(cookie);
+
             HttpHeaders headers = new HttpHeaders();
             headers.add("Location", FRONTEND_REDIRECT_URL);
             return new ResponseEntity<>(memberDTO, headers, HttpStatus.SEE_OTHER);
